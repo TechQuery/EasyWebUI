@@ -1,0 +1,610 @@
+@charset "UTF-8";
+
+/*
+ *            >>>  EasyWebUI.css  <<<
+ *
+ *
+ *    A CSS Framework which is similar to BootStrap,
+ *    and can be used in the Web UI development of
+ *    Any Platform.
+ *
+ *    [Version]    v1.0  (2014-12-09)
+ *
+ *    [Require]    CSS 2.1  (Best Effect with CSS 3),
+ *
+ *                 Font Awesome  v4,
+ *
+ *                 EasyWebUI.js
+ *
+ *
+ *        (C)2014    test_32@fyscu.com
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/* ----------- HTML Reset ---------- */
+/*
+    Reset the style of HTML Element to a Modern View,
+    to improve the User Experience.
+*/
+html, body {
+    margin:         0;
+    padding:        0;
+    /*  Specific Font Names is used for setting Sans-Serif Chinese Font
+        in Google Chrome on Windows, Linux/UNIX and Mac OS X.            */
+    font-family:    "Microsoft YaHei", "WenQuanYi Micro Hei", STXihei,
+                    sans-serif, monospace;
+    background:     rgb(231, 231, 231);
+}
+input, textarea, select, button {
+    /*  This setting is used for Elements within Document Fragment
+        or as a Form Sub-Element.                                   */
+    font-family:    "Microsoft YaHei", "WenQuanYi Micro Hei", STXihei,
+                    sans-serif, monospace;
+}
+/* ----- HyperLink ----- */
+a:link, a:visited {
+    text-decoration:    none;
+    color:              black;
+}
+a:hover, a:active {
+    text-decoration:    underline;
+}
+a:hover {
+    color:    blue;
+}
+a:active {
+    color:    red;
+}
+a img {
+    border:    none;
+}
+/* ----- Data Table ----- */
+table {
+    border-collapse:    collapse;
+    border-spacing:     0;
+    margin:             0.1em  0;
+    width:              100%;
+}
+table tr {
+    line-height:    2em;
+}
+table th, table td {
+    padding:    0  0.5em;
+}
+th {
+    white-space:      nowrap;
+    text-align:       left;
+}
+thead tr {
+    background:    rgb(93, 92, 96)  !important;
+    color:         white  !important;
+}
+tbody tr {
+    font-size:          0.9em;
+    transition:         background-color  ease-in-out  .15s,
+                        box-shadow        ease-in-out  .15s;
+}
+tbody tr:hover {
+    background:    gray  !important;
+}
+tbody tr.selected {
+    background:    rgb(176, 190, 217);
+}
+tbody tr.focus {
+    background-color:    rgb(35, 160, 220)  !important;
+    box-shadow:          inset  0  1px  1px  rgba(0, 0, 0, 0.075),
+                         0  0  8px  rgba(14, 144, 210, 0.6);
+}
+/* ----- Button ----- */
+input[type="button"],
+input[type="reset"],
+button, a.Button {
+    text-decoration:    none;
+    text-align:         center;
+    font-size:          1em;
+    background:         rgb(88, 167, 0);
+    color:              white;
+    display:            inline-block;
+    padding:            0.5em  1em;
+    border:             0;
+    border-radius:      5px;
+}
+input[type="button"]:hover, input[type="button"]:active,
+input[type="reset"]:hover,  input[type="reset"]:active,
+button:hover,               button:active,
+a.Button:hover,             a.Button:active {
+    background:    gray;
+    cursor:        pointer;
+}
+input[type="submit"],
+button[type="submit"] {
+    display:       block;
+    width:         100%;
+    margin-top:    1em;
+}
+/* ----- Form Elements ----- */
+input[type="text"], input[type="password"],
+select,             textarea {
+    font-size:        1.2em;
+    padding:          5px;
+    outline:          none;
+    border:           1px  solid  rgb(204, 204, 204);
+    border-radius:    5px;
+    transition:       border-color  ease-in-out  .15s,
+                      box-shadow    ease-in-out  .15s;
+}
+input[type="text"]:focus,     input[type="text"]:hover,
+input[type="password"]:focus, input[type="password"]:hover,
+select:hover,                 textarea:hover {
+    border-color:    rgb(14, 144, 210);
+    box-shadow:      inset  0  1px  1px  rgba(0, 0, 0, 0.075),
+                     0  0  8px  rgba(14, 144, 210, 0.6);
+}
+label {
+    padding-right:    2em;
+    word-spacing:     0.5em;
+}
+/* ----- iFrame ----- */
+iframe {
+    width:    100%;
+}
+iframe[src^="http:"],
+iframe[src^="https:"],
+iframe[src^="//"],
+iframe[rel~="nofollow"] {
+    min-height:    600px;
+}
+
+
+/* ----------- Layout System ---------- */
+/*
+    Build three kinds of Layout Box based on Border-Box Model
+    (with Float Clear Fix), which are very easy to use:
+
+    [ Grid Column ]
+
+        Column Box based on the Proportion of Parent Element Width,
+        which is easy to set contents to Vertical-Center.
+
+    [ Item Box ]
+
+        A kind of Content Box with Cool Border, which can Float to
+        Fit the Size Changing of the Viewport.
+
+        It also can be set Horizontal-Center easily.
+
+    -----------
+
+    [ Tool Classes ]
+
+        CenterX, CenterY, Ellipsis, Float-L, Float-R, Fix-Top
+*/
+* {
+    box-sizing:    border-box;
+}
+.ClearFix:after, body:after,
+ul:after,        form:after,    div:after,
+header:after,    footer:after,  nav:after,
+article:after,   section:after, aside:after {
+    content:        " ";
+    font-size:      0;
+    line-height:    0;
+    height:         0;
+    width:          0;
+    visibility:     hidden;
+    display:        block;
+    clear:          both;
+    zoom:           1;
+}
+.CenterX {
+    text-align:        center;
+}
+.CenterY {
+    display:    table;
+}
+.CenterY > * {
+    float:             none;
+    display:           table-cell;
+    vertical-align:    middle;
+}
+.Ellipsis,
+.Ellipsis a,  .Ellipsis span,
+.Ellipsis li, .Ellipsis td {
+      overflow:         hidden;
+	white-space:      nowrap;
+  	text-overflow:    ellipsis;
+}
+.Float-L { float:  left; }
+.Float-R { float:  right; }
+.Fix-Top {
+    position:    fixed;
+    z-index:     2147483647;
+}
+
+/* ----- Grid Column ----- */
+.Grid-Row {
+    display:    table;
+    width:      100%;
+    margin:     0  !important;
+    padding:    0  !important;
+}
+.Grid-Column {
+    display:           table-cell;
+    vertical-align:    top;
+}
+.Grid-Column.CenterY {
+    float:             none;
+    vertical-align:    middle;
+}
+.Grid-Column p {
+    margin:     0;
+    padding:    1em  0;
+}
+.Column-1_1 {
+    width:         100%;
+    text-align:    left  !important;
+}
+.Column-1_2 {
+    width:    50%;
+}
+.Column-1_3 {
+    width:    33.3%;
+}
+.Column-2_3 {
+    width:    66.6%;
+}
+.Column-1_4 {
+    width:    25%;
+}
+.Column-3_4 {
+    width:    75%;
+}
+.Column-1_5 {
+    width:    20%;
+}
+.Column-4_5 {
+    width:    80%;
+}
+.Column-2_5 {
+    width:    40%;
+}
+.Column-3_5 {
+    width:    60%;
+}
+.Column-1_6 {
+    width:    16.6%;
+}
+.Column-5_6 {
+    width:    83.3%;
+}
+.Column-1_7 {
+    width:    14.2%;
+}
+.Column-6_7 {
+    width:    85.7%;
+}
+.Column-3_7 {
+    width:    42.8%;
+}
+.Column-4_7 {
+    width:    57.1%;
+}
+.Column-4_9 {
+    width:    44.4%;
+}
+.Column-3_10 {
+    width:    30%;
+}
+.Column-11_20 {
+    width:    55%;
+}
+/* ----- Item Box ----- */
+.Item-Box {
+    display:       inline-block;
+    margin:        0  1%  0.5em;
+    text-align:    left;
+    background:    white;
+    border:        1px  solid  rgb(215, 215, 215);
+    box-shadow:    1px  2px  3px  rgb(200, 200, 200);
+    transition:    border-color  ease-in-out  .15s,
+                   box-shadow    ease-in-out  .15s;
+}
+.Item-Box:hover {
+    border-color:    rgb(14, 144, 210);
+    box-shadow:      inset  0  1px  1px  rgba(0, 0, 0, 0.075),
+                     0  0  8px  rgba(14, 144, 210, 0.6);
+}
+
+
+/* ----------- Function Module ---------- */
+.Web-Body {
+    background:    ivory;
+    max-width:     960px;
+    height:        100%;
+    margin:        auto;
+    padding:       0  1em;
+}
+
+ul.NavBar {
+    list-style:    none;
+    margin:        0;
+    padding:       0;
+}
+ul.NavBar > li {
+    float:         left;
+    padding:       0.5em  0;
+    text-align:    center;
+}
+ul.NavBar > li > a {
+    display:    block;
+    width:      100%;
+    outline:    none;
+}
+ul.NavBar > li:nth-child(n+2) > a {
+    border-left:    1px  solid  rgb(200, 200, 200);
+}
+ul.NavBar > li > a:active,
+ul.NavBar > li > a:hover {
+    color:              black;
+    text-decoration:    none;
+}
+ul.NavBar > li:active {
+    background:    rgb(230, 230, 230);
+}
+
+ul.Content_Nav {
+    padding:           0;
+    border-bottom:     1px  solid  rgb(200, 200, 200);
+    padding-bottom:    0.5em;
+}
+.Content_Nav li {
+    display:    inline;
+}
+.Content_Nav li .fa {
+    padding:    0  1em;
+}
+.Content_Nav li a {
+    display:            inline;
+    text-decoration:    none;
+    color:              black;
+}
+.Content_Nav .Sub_Label:before {
+    content:        "/";
+    color:          rgb(150, 150, 150);
+    margin:         0  0.5em;
+}
+
+.Logo img {
+    display:    block;
+    width:      100%;
+}
+.Progress {
+    height: 20px;
+    margin: 1em;
+    overflow: hidden;
+    background-color: rgb(245, 245, 245);
+    border-radius: 4px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+.Progress-Bar {
+    float: left;
+    width: 0;
+    height: 100%;
+    font-size: 12px;
+    line-height: 20px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    background-color: rgb(66, 139, 202);
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+    transition: width .6s ease;
+}
+.Progress-Bar_striped {
+    background-image:    linear-gradient(45deg,
+        rgba(255, 255, 255, 0.15)  25%,
+        rgba(0, 0, 0, 0)           25%,
+        rgba(0, 0, 0, 0)           50%,
+        rgba(255, 255, 255, 0.15)  50%,
+        rgba(255, 255, 255, 0.15)  75%,
+        rgba(0, 0, 0, 0)           75%,
+        rgba(0, 0, 0, 0)
+    );
+    background-size:     40px  40px;
+}
+.Progress-Bar.active {
+    -webkit-animation:    Progress-Bar_stripes  2s  linear  infinite;
+    -o-animation:         Progress-Bar_stripes  2s  linear  infinite;
+    animation:            Progress-Bar_stripes  2s  linear  infinite;
+}
+
+.Panel {
+    overflow:    hidden;
+}
+.Panel > .Head {
+    font-weight:       bold;
+    letter-spacing:    0.5em;
+    border-left:       3px  solid  black;
+    padding:           0.5em;
+    background:        white;
+    box-shadow:        1px  2px  3px  gray;
+    width:             99.5%;
+}
+
+.Select ul {
+    padding:    0;
+    margin:     0.5em;
+}
+.Select ul li {
+    display:    inline-block;
+    padding:    0.5em;
+    margin:     0  0.25em;
+    cursor:     pointer;
+}
+input.SearchBar {
+    width:    7em;
+}
+input.SearchBar:hover {
+    width:    15em;
+}
+img.UserLogo {
+    max-height:        2.5em;
+    border:            3px  solid  white;
+    border-radius:     10px;
+    margin:            5px;
+}
+.Control-Line {
+    margin:           auto;
+    padding:          1em  5em;
+    min-width:        25em;
+}
+/* ----- Tab Control ----- */
+.Tab > ol {
+    padding:        0;
+    margin:         0  0  -1px  0;
+    line-height:    2.3em;
+}
+.Tab > ol > li {
+    display:          inline;
+    padding:          0.5em  1em;
+    background:       white;
+    color:            rgb(118, 118, 119);
+    border:           1px  solid  rgb(215, 215, 218);
+    box-shadow:       1px  2px  3px  rgb(118, 118, 119);
+    margin-bottom:    -1px;
+    cursor:           pointer;
+}
+.Tab > ol > li.opened {
+    border-radius:    5px  5px  0  0;
+    border:           none;
+    box-shadow:       none;
+}
+.Tab > ol > li.active {
+    background:    rgb(230, 230, 230);
+}
+.Tab > ol > li:hover {
+    background:    rgb(200, 200, 200)  !important;
+}
+.Tab > div {
+    padding:          1em;
+    overflow:         hidden;
+    background:       rgb(230, 230, 230);
+    border-radius:    0  5px  5px  5px;
+    display:          none;
+}
+.Tab > div.active {
+    display:    block;
+}
+
+.Item-Box h3.Title {
+    text-align:       center;
+    background:       rgb(26, 121, 224);
+    color:            white;
+    padding:          1em;
+    font-weight:      normal;
+    border-radius:    5px;
+    min-width:        10em;
+}
+.Item-Box .Title {
+    margin:    0.5em;
+}
+.Item-Box .Logo.fa {
+    font-size:     5em;
+    margin:        0;
+    padding:       0.1em;
+}
+.Item-Box ul.Intro {
+    list-style:    none;
+    padding:       0  3em;
+    text-align:    center;
+    color:         rgb(60, 60, 60);
+}
+span.Float_Button {
+    background:       white;
+    border:           1px  solid  gray;
+    border-radius:    5px;
+    padding:          3px;
+    cursor:           move;
+
+    display:          none;
+    position:         fixed;
+    left:             0;
+    z-index:          999;
+}
+span.Float_Button > span > i.fa {
+    font-size:      1.5em;
+    width:          1.3em;
+    line-height:    1.3em;
+    text-align:     center;
+    cursor:         pointer;
+}
+span.Float_Button > span > i.fa:hover {
+    background:       rgb(220, 220, 220);
+    border-radius:    3px;
+}
+span.Float_Button > span > i.fa:active {
+    background:    gray;
+}
+
+
+/* ----------- Atom View ---------- */
+.Red {
+    color:           rgb(245, 81, 80)  !important;
+    border-color:    rgb(245, 81, 80)  !important;
+}
+.Green {
+    color:           rgb(88, 167, 0)  !important;
+    border-color:    rgb(88, 167, 0)  !important;
+}
+.Blue {
+    color:           rgb(26, 121, 224)  !important;
+    border-color:    rgb(26, 121, 224)  !important;
+}
+.Blue_O {
+    background:      rgb(26, 121, 224)  !important;
+    color:           white  !important;
+    border-color:    none  !important;
+}
+.Gray_O {
+    background:      rgb(235, 235, 235)  !important;
+    color:           black  !important;
+    border-color:    none  !important;
+}
+.Orange_O {
+    background:      rgb(254, 178, 18)  !important;
+    color:           white  !important;
+    border-color:    none  !important;
+}
+.Round {
+    border-radius:    50%;
+}
+.Halo,
+.Select ul > li:hover {
+    box-shadow:    0  0  25px  gray;
+}
+.Rotate-90 {
+    -moz-transform:       rotate(90deg);
+    -o-transform:         rotate(90deg);
+    -webkit-transform:    rotate(90deg);
+    transform:            rotate(90deg);
+    filter:               progid: DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
+.Flip-Y {
+    -moz-transform:       scale(-1，1);
+    -o-transform:         scale(-1，1);
+    -webkit-transform:    scale(-1，1);
+    transform:            scale(-1，1);
+    filter:               FlipH(); 
+}
+.Flip-X {
+    -moz-transform:       scale(1，-1);
+    -o-transform:         scale(1，-1);
+    -webkit-transform:    scale(1，-1);
+    transform:            scale(1，-1);
+    filter:               FlipV(); 
+}
+.Reflect {
+    -webkit-box-reflect:    below  0px  -webkit-gradient(
+        linear,
+        left top, left bottom,
+        from(transparent), to(rgba(250, 250, 250, 0.1))
+    );
+}
