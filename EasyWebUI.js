@@ -82,3 +82,28 @@ $(document).ready(function () {
     }).bind('selectStart', Event_Break).bind('contextmenu', Event_Break)
         .css('cursor', 'default');
 });
+
+
+(function ($) {
+
+    $.fn.Select = function ($_Value) {
+        var $_Select = this.is('ul') ? this : this.find('ul.Select');
+
+        $_Select.children('li').click(function () {
+            var  $_This = $(this),  $_That = $_This.siblings('li.active');
+
+            $_That.children('input').attr('checked', false);
+            $_This.children('input').attr('checked', true);
+
+            $_That.removeClass('active')
+                .children('i.fa').addClass('fa-circle-o').removeClass('fa-circle');
+            var _Value_ = $_This.addClass('active')
+                .children('i.fa').addClass('fa-circle').removeClass('fa-circle-o')
+                .data('value');
+
+            if (_Value_)
+                $('form .Value[for="' + $_Select[0].id + '"]').text(_Value_);
+        });
+        return this;
+    };
+})(self.jQuery || self.Zepto);
