@@ -429,16 +429,42 @@ ul.Content_Nav {
     width:             99.5%;
 }
 
-.Select ul {
+/* ----- Form Radio ----- */
+form ul.Select ul {
     padding:    0;
     margin:     0.5em;
 }
-.Select ul li {
+form ul.Select ul li {
     display:    inline-block;
     padding:    0.5em;
     margin:     0  0.25em;
     cursor:     pointer;
 }
+form ul.Select {
+    margin:        0;
+    padding:       0;
+    text-align:    center;
+}
+form ul.Select li {
+    display:    inline-block;
+    outline:    none;
+}
+form ul.Select li.active {
+    font-weight:    bold;
+    color:          rgb(88, 167, 0)  !important;
+}
+form ul.Select li input[type="radio"] {
+    display:    none;
+}
+form ul.Select li i.fa {
+    display:      block;
+    font-size:    2em;
+    margin:       0.4em;
+}
+form ul.Select li i.fa.fa-circle-o {
+    color:    darkgray;
+}
+
 input.SearchBar {
     width:    7em;
 }
