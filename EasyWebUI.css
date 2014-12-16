@@ -102,6 +102,8 @@ button, a.Button {
     text-decoration:    none;
     text-align:         center;
     font-size:          1em;
+    word-wrap:          break-word;
+    word-break:         break-all;
     background:         rgb(88, 167, 0);
     color:              white;
     display:            inline-block;
@@ -126,8 +128,7 @@ button[type="submit"] {
 input[type="text"], input[type="password"],
 select,             textarea {
     font-size:        1.2em;
-    padding:          5px;
-    outline:          none;
+    padding:          0.5em;
     border:           1px  solid  rgb(204, 204, 204);
     border-radius:    5px;
     transition:       border-color  ease-in-out  .15s,
@@ -135,7 +136,9 @@ select,             textarea {
 }
 input[type="text"]:focus,     input[type="text"]:hover,
 input[type="password"]:focus, input[type="password"]:hover,
-select:hover,                 textarea:hover {
+select:focus,                 select:hover,
+textarea:hover {
+    outline:         none;
     border-color:    rgb(14, 144, 210);
     box-shadow:      inset  0  1px  1px  rgba(0, 0, 0, 0.075),
                      0  0  8px  rgba(14, 144, 210, 0.6);
@@ -317,6 +320,20 @@ article:after,   section:after, aside:after {
 
 
 /* ----------- Function Module ---------- */
+/*
+    Control Modes:
+
+    [ Tab Mode classes ]
+
+        *  Point :      Content Element Serial Number
+
+        *  Card :       Tab Card looking within Text (Icon is optional)
+
+        *  Button :     Switch Button looking within Text (Icon is optional)
+
+        *  Monitor :    Monitors looking within Thumbnail
+
+*/
 .Web-Body {
     background:    ivory;
     max-width:     960px;
@@ -481,8 +498,7 @@ img.UserLogo {
     margin:           auto;
     padding:          1em  5em;
     min-width:        25em;
-}
-/* ----- Tab Control ----- */
+}/* ---------- Tab Control ---------- */
 .Tab > ol {
     padding:        0;
     margin:         0  0  -1px  0;
@@ -518,6 +534,66 @@ img.UserLogo {
 }
 .Tab > div.active {
     display:    block;
+}
+
+.Tab.Point .Grid-Column > .Head,
+.Tab.Button .Grid-Column > .Head,
+.Tab.Monitor .Grid-Column > .Head {
+    font-size:    2em;
+    color:        royalblue;
+}
+.Tab.Point .Grid-Column > .Head,
+.Tab.Monitor .Grid-Column > .Head {
+    font-size:    3em;
+}
+.Tab.Point .Grid-Column > ul,
+.Tab.Button .Grid-Column > ul,
+.Tab.Monitor .Grid-Column > ul {
+    list-style:    none;
+}
+/* ----- Button Mode ----- */
+.Tab > ol {
+    font-size:    0;
+}
+.Tab > ol > li,
+.Tab > ol > li.opened {
+    margin:           0;
+    border:           1px  solid  lightgray;
+    border-radius:    0;
+    box-shadow:       none;
+    background:       white;
+    display:          inline-block;
+    font-size:        16px;
+    padding:          1.5em;
+}
+/* ----- Monitor Mode ----- */
+.Tab.Monitor > ol {
+    margin:         1em  0;
+    padding:        0;
+    line-height:    normal;
+    font-size:      2em;
+}
+.Tab.Monitor > ol > li {
+    display:          inline-block;
+    margin:           0  1%;
+    padding:          0;
+    text-align:       left;
+    background:       white;
+    border:           1px  solid  rgb(215, 215, 215);
+    box-shadow:       1px  2px  3px  rgb(200, 200, 200);
+    transition:       border-color  ease-in-out  .15s,
+                      box-shadow    ease-in-out  .15s;
+    border-radius:    0;
+    max-width:        30%;
+}
+.Tab.Monitor > ol > li:hover {
+    border-color:    rgb(14, 144, 210);
+    box-shadow:      inset  0  1px  1px  rgba(0, 0, 0, 0.075),
+                     0  0  8px  rgba(14, 144, 210, 0.6);
+    background:      white  !important;
+}
+.Tab.Monitor > div {
+    background:    white;
 }
 
 .Item-Box h3.Title {
