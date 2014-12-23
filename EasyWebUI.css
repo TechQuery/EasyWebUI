@@ -180,7 +180,7 @@ iframe[rel~="nofollow"] {
 
     [ Tool Classes ]
 
-        CenterX, CenterY, Ellipsis, Float-L, Float-R, Fix-Top
+        CenterX, CenterY, Ellipsis, Float-L, Float-R, Fix-Top, PC_Narrow
 */
 * {
     box-sizing:    border-box;
@@ -223,13 +223,18 @@ article:after,   section:after, aside:after {
     position:    fixed;
     z-index:     2147483647;
 }
+.PC_Narrow {
+    min-width:    800px;
+    max-width:    960px;
+    margin:       auto  !important;
+}
 
 /* ----- Grid Column ----- */
 .Grid-Row {
     display:    table;
     width:      100%;
-    margin:     0  !important;
-    padding:    0  !important;
+    margin:     0;
+    padding:    0;
 }
 .Grid-Column {
     display:           table-cell;
