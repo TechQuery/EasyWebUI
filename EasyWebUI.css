@@ -234,7 +234,7 @@ article:after,   section:after, aside:after {
     display:    table;
     width:      100%;
     margin:     0;
-    padding:    0;
+    padding:    0  !important;
 }
 .Grid-Column {
     display:           table-cell;
@@ -499,11 +499,15 @@ img.UserLogo {
     border-radius:     10px;
     margin:            5px;
 }
-.Control-Line {
+.Form-Line {
     margin:           auto;
-    padding:          1em  5em;
+    padding:          0.5em  1em;
     min-width:        25em;
-}/* ---------- Tab Control ---------- */
+}
+.Form-Line > * {
+    width:    100%;
+}
+/* ---------- Tab Control ---------- */
 .Tab > ol {
     padding:        0;
     margin:         0  0  -1px  0;
@@ -693,6 +697,13 @@ span.Float_Button > span > i.fa:active {
     -webkit-transform:    rotate(90deg);
     transform:            rotate(90deg);
     filter:               progid: DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
+.Rotate-180 {
+    -moz-transform:       rotate(180deg);
+    -o-transform:         rotate(180deg);
+    -webkit-transform:    rotate(180deg);
+    transform:            rotate(180deg);
+    filter:               progid: DXImageTransform.Microsoft.BasicImage(rotation=2);
 }
 .Flip-Y {
     -moz-transform:       scale(-1，1);
