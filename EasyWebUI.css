@@ -499,13 +499,20 @@ img.UserLogo {
     border-radius:     10px;
     margin:            5px;
 }
-.Form-Line {
+form .Form-Line {
     margin:           auto;
-    padding:          0.5em  1em;
+    padding:          0.5em;
     min-width:        25em;
 }
-.Form-Line > * {
+form .Form-Line input,   form .Form-Line textarea,
+form .Form-Line select,  form .Form-Line button  {
     width:    100%;
+}
+form .Form-Line > .Grid-Row > .Grid-Column {
+    padding-left:    0.5em;
+}
+form .Form-Line > .Grid-Row > .Grid-Column:first-child {
+    padding:    0;
 }
 /* ---------- Tab Control ---------- */
 .Tab > ol {
