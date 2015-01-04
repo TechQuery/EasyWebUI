@@ -674,6 +674,11 @@ span.Float_Button > span > i.fa:active {
     color:           rgb(245, 81, 80)  !important;
     border-color:    rgb(245, 81, 80)  !important;
 }
+.Red_O {
+    background:      rgb(245, 81, 80)  !important;
+    color:           white  !important;
+    border-color:    transparent  !important;
+}
 .Green {
     color:           rgb(88, 167, 0)  !important;
     border-color:    rgb(88, 167, 0)  !important;
@@ -685,20 +690,23 @@ span.Float_Button > span > i.fa:active {
 .Blue_O {
     background:      rgb(26, 121, 224)  !important;
     color:           white  !important;
-    border-color:    none  !important;
+    border-color:    transparent  !important;
 }
 .Gray_O {
     background:      rgb(235, 235, 235)  !important;
     color:           black  !important;
-    border-color:    none  !important;
+    border-color:    transparent  !important;
 }
 .Orange_O {
     background:      rgb(254, 178, 18)  !important;
     color:           white  !important;
-    border-color:    none  !important;
+    border-color:    transparent  !important;
 }
 .Round {
     border-radius:    50%;
+    display:          inline-block;
+    padding:          1em;
+    text-align:       center;
 }
 .Halo,
 .Select ul > li:hover {
