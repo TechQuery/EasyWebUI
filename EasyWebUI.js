@@ -24,16 +24,17 @@ $(document).ready(function () {
     });
 
 // ----------- 标签页 控件 ----------- //
-    var $_Tab_Head = $('.Tab > ol > li').addClass('opened'),
-        $_Tab_Body = $('.Tab > div');
-    $_Tab_Head.mousedown(function () {
-        var $_This_Head = $(this),
-            $_This_Body = $_Tab_Body.filter(':visible');
+    $('.Tab > ol > li').addClass('opened').mousedown(function () {
+        var $_This_Head = $(this);
+        var $_Tab_Head = $_This_Head.parentsUntil('.Tab').children('li'),
+            $_Tab_Body = $_This_Head.parentsUntil('.Tab').siblings('div');
+        var $_This_Body = $_Tab_Body.filter(':visible');
+
         switch ( arguments[0].which ) {
             case 1:    {
                 $_Tab_Head.addClass('opened');
                 $_This_Head.addClass('active').siblings().removeClass('active');
-                $_This_Body.removeClass('active');
+                $_This_Body.removeClass('active')
                 $_Tab_Body.eq( $_This_Head.index() ).addClass('active');
             }    break;
             case 3:    if ( $_This_Body.length ) {
