@@ -24,6 +24,14 @@ $(document).ready(function () {
     });
 
 // ----------- 标签页 控件 ----------- //
+    var Tab_Nav_NO = top.location.hash.match(/^#Tab_Nav_(\d+)/);
+    Tab_Nav_NO = Tab_Nav_NO ? parseInt( Tab_Nav_NO[1] ) : 1;
+    if ($('.Tab.Nav:eq(0) > ol > li.active').index() != Tab_Nav_NO) {
+        $('.Tab.Nav:eq(0) > ol > li').removeClass('active')
+            .eq(Tab_Nav_NO - 1).addClass('active');
+        $('.Tab.Nav:eq(0) > div').removeClass('active')
+            .eq(Tab_Nav_NO - 1).addClass('active');
+    }
     $('.Tab > ol > li').addClass('opened').mousedown(function () {
         var $_This_Head = $(this);
         var $_Tab_Head = $_This_Head.parentsUntil('.Tab').children('li'),
@@ -34,7 +42,7 @@ $(document).ready(function () {
             case 1:    {
                 $_Tab_Head.addClass('opened');
                 $_This_Head.addClass('active').siblings().removeClass('active');
-                $_This_Body.removeClass('active')
+                $_This_Body.removeClass('active');
                 $_Tab_Body.eq( $_This_Head.index() ).addClass('active');
             }    break;
             case 3:    if ( $_This_Body.length ) {
@@ -42,6 +50,7 @@ $(document).ready(function () {
                     $_This_Body.toggleClass('active');
                 }
         }
+        arguments[0].stopPropagation();
     });
 
 // ----------- 标签选择 控件 ----------- //
