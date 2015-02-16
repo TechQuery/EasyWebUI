@@ -1,27 +1,41 @@
+(function (BOM, DOM, $) {
+
+    $.fn.iPanel = function () {
+        var $_This = this.is('.Panel') ? this : this.find('.Panel');
+
+        return  $_This.each(function () {
+            var $_Body = $(this).children('.Body');
+
+            if (! ($_Body.length && $_Body.height()))
+                $(this).addClass('closed');
+        }).children('.Head').dblclick(function () {
+            var $_Head = $(this);
+            var $_Panel = $_Head.parent();
+            var $_Head_Height =
+                    Number( $_Head.css('height').slice(0, -2) )
+                    + Number( $_Head.css('margin-top').slice(0, -2) )
+                    + Number( $_Head.css('margin-bottom').slice(0, -2) )
+                    + Number( $_Panel.css('padding-top').slice(0, -2) ) * 2;
+
+            if (! $_Panel.hasClass('closed')) {
+                $_Panel.data('height', $_Panel.height());
+                $_Panel.stop().animate({height:  $_Head_Height});
+                $_Panel.addClass('closed');
+            } else {
+                $_Panel.stop().animate({height:  $_Panel.data('height')});
+                $_Panel.removeClass('closed');
+            }
+        });
+    };
+
+})(self, self.document, self.jQuery);
+
+
+
 $(document).ready(function () {
 
 // ----------- 面板 控件 ----------- //
-    $('.Panel').each(function () {
-        $(this).data(
-            'height',  Number( $(this).css('height').slice(0, -2) )
-        );
-    }).children('.Head').dblclick(function () {
-        var $_Head = $(this);
-        var $_Panel = $_Head.parent();
-        var $_Head_Height =
-                Number( $_Head.css('height').slice(0, -2) )
-                + Number( $_Head.css('margin-top').slice(0, -2) )
-                + Number( $_Head.css('margin-bottom').slice(0, -2) )
-                + Number( $_Panel.css('padding-top').slice(0, -2) ) * 2;
-
-        if (! $_Panel.hasClass('closed')) {
-            $_Panel.stop().animate({height:  $_Head_Height});
-            $_Panel.addClass('closed');
-        } else {
-            $_Panel.stop().animate({height:  $_Panel.data('height')});
-            $_Panel.removeClass('closed');
-        }
-    });
+    $('.Panel').iPanel();
 
 // ----------- 标签页 控件 ----------- //
     var Tab_Nav_NO = top.location.hash.match(/^#Tab_Nav_(\d+)/);
