@@ -1,5 +1,99 @@
 (function (BOM, DOM, $) {
 
+    var CSS_Prefix = (function (iUA) {
+            try {
+                return ({
+                    webkit:     '-webkit-',
+                    gecko:      '-moz-',
+                    trident:    '-ms-'
+                })[
+                    iUA.match(/Gecko|WebKit|Trident/i)[0].toLowerCase()
+                ];
+            } catch (iError) {
+                return '';
+            }
+        })(navigator.userAgent),
+        Flex_Size = {
+            horizontal:    {
+                length:    'width',
+                margin:    ['left', 'right']
+            },
+            vertical:      {
+                length:    'height',
+                margin:    ['top', 'bottom']
+            }
+        };
+
+    function FlexFix() {
+        var $_Box = $(this);
+
+        var Size_Name = Flex_Size[
+                $_Box.css(CSS_Prefix + 'box-orient')
+            ];
+
+        var Flex_Child = $.extend([ ], {
+                sum:       0,
+                sum_PX:    (
+                    $_Box[Size_Name.length]() -
+                    parseFloat( $_Box.css('padding-' + Size_Name.margin[0]) ) -
+                    parseFloat( $_Box.css('padding-' + Size_Name.margin[1]) )
+                )
+            });
+        $_Box.children(/*':visible'*/).each(function () {
+            var $_This = $(this);
+
+            var _Index_ = Flex_Child.push({$_DOM:  $_This}) - 1,
+                _Length_ = $_This[Size_Name.length]();
+
+            if (! _Length_) {
+                Flex_Child.pop();
+                return;
+            }
+
+            Flex_Child[_Index_].scale = parseInt(
+                $_This.css(CSS_Prefix + 'box-flex')
+            );
+
+            Flex_Child.sum += Flex_Child[_Index_].scale;
+            Flex_Child.sum_PX -= (
+                _Length_ +
+                parseFloat(
+                    $_This.css('margin-' + Size_Name.margin[0])
+                ) +
+                parseFloat(
+                    $_This.css('margin-' + Size_Name.margin[1])
+                )
+            );
+        });
+
+        var iUnit = Flex_Child.sum_PX / Flex_Child.sum;
+        for (var i = 0; i < Flex_Child.length; i++)
+            Flex_Child[i].$_DOM[Size_Name.length](
+                Flex_Child[i].$_DOM[Size_Name.length]() + (Flex_Child[i].scale * iUnit)
+            );
+    }
+
+    var _addClass_ = $.fn.addClass;
+
+    $.fn.addClass = function () {
+        _addClass_.apply(this, arguments);
+
+        if ($.inArray(arguments[0].split(' '), 'Flex-Box') > -1)
+            this.each(FlexFix);
+
+        return this;
+    };
+
+    $(document).ready(function () {
+        $('.Flex-Box').each(FlexFix);
+    });
+
+})(self,  self.document,  self.jQuery || self.Zepto);
+
+
+
+(function (BOM, DOM, $) {
+
     $.fn.iPanel = function () {
         var $_This = this.is('.Panel') ? this : this.find('.Panel');
 
@@ -28,22 +122,26 @@
         });
     };
 
-})(self, self.document, self.jQuery);
+})(self,  self.document,  self.jQuery || self.Zepto);
 
 
 
 $(document).ready(function () {
 
+// ----------- 加载 遮罩 ----------- //
+    $(document.body).addClass('Loaded');
+
 // ----------- 面板 控件 ----------- //
     $('.Panel').iPanel();
 
 // ----------- 标签页 控件 ----------- //
-    var Tab_Nav_NO = top.location.hash.match(/^#Tab_Nav_(\d+)/);
+    var $_Tab_0 = $('.Tab.Nav').eq(0),
+        Tab_Nav_NO = top.location.hash.match(/^#Tab_Nav_(\d+)/);
     Tab_Nav_NO = Tab_Nav_NO ? parseInt( Tab_Nav_NO[1] ) : 1;
-    if ($('.Tab.Nav:eq(0) > ol > li.active').index() != Tab_Nav_NO) {
-        $('.Tab.Nav:eq(0) > ol > li').removeClass('active')
+    if ($_Tab_0.find('ol > li.active').index() != Tab_Nav_NO) {
+        $_Tab_0.find('ol > li').removeClass('active')
             .eq(Tab_Nav_NO - 1).addClass('active');
-        $('.Tab.Nav:eq(0) > div').removeClass('active')
+        $_Tab_0.children('div').removeClass('active')
             .eq(Tab_Nav_NO - 1).addClass('active');
     }
     $('.Tab > ol > li').addClass('opened').mousedown(function () {
@@ -92,19 +190,21 @@ $(document).ready(function () {
     });
 
 // ----------- “禁止选中”特性的兼容 ----------- //
-    function Event_Break() { return false; }
-    $(
-        'button, .No_Select, .Panel > .Head, .Tab > ol'
-    ).attr('unSelectable', 'on').css({
-        '-moz-user-select':         '-moz-none',
-        '-khtml-user-select':       'none',
-        '-webkit-user-select':      'none',
-        '-o-user-select':           'none',
-        '-ms-user-select':          'none',
-        'user-select':              'none',
-        '-webkit-touch-callout':    'none'
-    }).bind('selectStart', Event_Break).bind('contextmenu', Event_Break)
-        .css('cursor', 'default');
+    function Event_Break() {  return false;  }
+
+    var $_No_Select = $('button, .No_Select, .Panel > .Head, .Tab > ol');
+
+    if ( $_No_Select.length )
+        $_No_Select.attr('unSelectable', 'on').css({
+            '-moz-user-select':         '-moz-none',
+            '-khtml-user-select':       'none',
+            '-webkit-user-select':      'none',
+            '-o-user-select':           'none',
+            '-ms-user-select':          'none',
+            'user-select':              'none',
+            '-webkit-touch-callout':    'none'
+        }).bind('selectStart', Event_Break).bind('contextmenu', Event_Break)
+            .css('cursor', 'default');
 });
 
 
@@ -130,4 +230,5 @@ $(document).ready(function () {
         });
         return this;
     };
+
 })(self.jQuery || self.Zepto);
