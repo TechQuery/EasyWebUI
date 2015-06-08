@@ -8,7 +8,7 @@
  *    and can be used in the Web UI development of
  *    Any Platform.
  *
- *    [Version]    v1.0  (2015-6-1)
+ *    [Version]    v1.0  (2015-6-7)
  *
  *    [Require]    CSS 2.1  (Best Effect with CSS 3),
  *
@@ -47,7 +47,8 @@ input, textarea, select, button {
     font-family:    "Microsoft YaHei", "WenQuanYi Micro Hei", STXihei,
                     sans-serif, monospace;
 }
-/* ----- HyperLink ----- */
+/* ----- Textual Elements ----- */
+/* --- HyperLink --- */
 a:link, a:visited {
     text-decoration:    none;
     color:              black;
@@ -64,7 +65,17 @@ a:active {
 a img {
     border:    none;
 }
-/* ----- Quote ----- */
+/* --- Important Information --- */
+em,  output  {
+    padding:        0  0.25em;
+    font-style:     normal;
+    font-weight:    bold;
+}
+hr {
+    width:     80%;
+    border:    1px  solid  darkgray;
+}
+/* --- Quote --- */
 pre {
     font-size:        20px;
     text-align:       left;
@@ -113,10 +124,23 @@ tbody tr.focus {
     box-shadow:          inset  0  1px  1px  rgba(0, 0, 0, 0.075),
                          0  0  8px  rgba(14, 144, 210, 0.6);
 }
+/* ----- Form Elements ----- */
 form {
     padding:    0  1em;
 }
-/* ----- Button ----- */
+label {
+    word-spacing:    0.5em;
+}
+fieldset {
+    padding:    1em;
+}
+fieldset > legend {
+    padding:          0  1em;
+    border:           1px  solid;
+    border-top:       0;
+    border-bottom:    0;
+}
+/* --- Button --- */
 input[type="button"],  button,  a.Button,
 input[type="submit"],  input[type="reset"]  {
     -webkit-appearance:         none;
@@ -141,21 +165,24 @@ input[type="reset"]:hover,   input[type="reset"]:active  {
     opacity:       0.7;
     cursor:        pointer;
 }
+button > *,  a.Button > *  {
+    display:           inline-block;
+    vertical-align:    middle;
+    max-height:        1.5em;
+    margin:            0  0.5em;
+}
 input[type="submit"],
 button[type="submit"] {
     display:    block;
     width:      50%  !important;
     margin:     1em  auto;
 }
-/* ----- Important Info Display ----- */
-em,  output  {
-    padding:        0  0.25em;
-    font-style:     normal;
-    font-weight:    bold;
-}
-/* ----- Form Elements ----- */
-input[type="text"], input[type="password"],
-select,             textarea {
+/* --- Text Input --- */
+input[type="text"],   input[type="password"],
+input[type="tel"],    input[type="number"],
+input[type="email"],  input[type="url"],
+input[type="search"], input[type="date"],
+select,               textarea {
     font-size:        1.2em;
     padding:          0.5em;
     border:           1px  solid  rgb(204, 204, 204);
@@ -166,44 +193,55 @@ select,             textarea {
 }
 input[type="text"]:focus,     input[type="text"]:hover,
 input[type="password"]:focus, input[type="password"]:hover,
+input[type="tel"]:focus,      input[type="tel"]:hover,
+input[type="number"]:focus,   input[type="number"]:hover,
+input[type="email"]:focus,    input[type="email"]:hover,
+input[type="url"]:focus,      input[type="url"]:hover,
+input[type="search"]:focus,   input[type="search"]:hover,
+input[type="date"]:focus,     input[type="date"]:hover,
 select:focus,                 select:hover,
-textarea:hover {
+textarea:focus,               textarea:hover {
     outline:         none;
     border-color:    rgb(14, 144, 210);
     box-shadow:      inset  0  1px  1px  rgba(0, 0, 0, 0.075),
                      0  0  8px  rgba(14, 144, 210, 0.6);
 }
-input[type="checkbox"] {
+/* --- Search Bar --- */
+input.Search, input[type="search"] {
+    width:    7em;
+}
+input.Search:hover, input[type="search"]:hover {
+    width:    15em;
+}
+/* --- Check & Radio --- */
+input[type="checkbox"], input[type="radio"] {
     -webkit-appearance:    none;
             width:         1.5em;
             height:        1.5em;
             border:        1px  solid  gray;
             background:    white;
 }
-input[type="checkbox"]:checked:before {
-    content:       "\2714";
+input[type="radio"] {
+    border-radius:    50%;
+}
+input[type="checkbox"]:checked:before,
+input[type="radio"]:checked:before     {
     display:       inline-block;
     width:         100%;
     height:        100%;
     text-align:    center;
 }
+input[type="checkbox"]:checked:before {
+    content:       "\2714";
+}
+input[type="radio"]:checked:before {
+    content:       "\25CF";
+}
+/* --- File Input --- */
 input[type="file"] {
     cursor:    pointer;
 }
-label {
-    padding-right:    2em;
-    word-spacing:     0.5em;
-}
-fieldset {
-    padding:    1em;
-}
-fieldset > legend {
-    padding:          0  1em;
-    border:           1px  solid;
-    border-top:       0;
-    border-bottom:    0;
-}
-/* ----- Input Range ----- */
+/* --- Range Input --- */
 /*
     Thank for Range.css --- http://danielstern.ca/range.css/
 */
@@ -214,20 +252,6 @@ input[type="range"] {
             outline:       none;
             cursor:        pointer;
             position:      relative;
-}
-input[type="range"]:before,
-input[type="range"]:after    {
-    position:    absolute;
-    bottom:      -1.5em;
-    color:       black;
-}
-input[type="range"]:before {
-    content:    attr(min);
-    left:       0;
-}
-input[type="range"]:after {
-    content:    attr(max);
-    left:       85%;
 }
 input[type="range"]::-webkit-slider-runnable-track {
     width:            100%;
@@ -251,7 +275,22 @@ input[type="range"]::-ms-track {
     border-radius:    0.75em;
     color:            transparent;
 }
-input[type="range"]::-ms-fill-lower,
+input[type="range"]:before,
+input[type="range"]:after   {
+    position:    absolute;
+}
+input[type="range"]:before {
+    content:          " ";
+    background:       greenyellow;
+    width:            50%;
+    height:           1.4em;
+    border-radius:    0.75em;
+    left:             1px;
+    top:              0.5em;
+}
+input[type="range"]::-ms-fill-lower {
+    background:    greenyellow;
+}
 input[type="range"]::-ms-fill-upper {
     background:    lightgray;
 }
@@ -260,10 +299,11 @@ input[type="range"]::-webkit-slider-thumb {
             background:       white;
             border:           1px  solid  gray;
             height:           1.5em;
-            width:            1.5em;
-            border-radius:    50%;
+            width:            2em;
+            border-radius:    0.75em;
             margin-top:       -1px;
             margin-left:      -1px;
+            position:         relative;
 }
 input[type="range"]::-moz-range-thumb,
 input[type="range"]::-ms-thumb {
@@ -271,17 +311,37 @@ input[type="range"]::-ms-thumb {
             background:       white;
             border:           1px  solid  gray;
             height:           1.5em;
-            width:            1.5em;
-            border-radius:    50%;
+            width:            2em;
+            border-radius:    0.75em;
             margin-top:       -1px;
             margin-left:      -1px;
 }
-input[type="range"]:focus::-webkit-slider-runnable-track {
+input[type="range"].Detail:before,
+input[type="range"].Detail:after    {
+    bottom:    -1.5em;
+    color:     black;
+}
+input[type="range"].Detail:before {
+    content:    attr(min);
+    left:       0;
+}
+input[type="range"].Detail:after {
+    content:    attr(max);
+    left:       85%;
+}
+input[type="range"].Detail::-ms-fill-lower {
+    background:    lightgray;
+}
+input[type="range"].Detail:focus::-webkit-slider-runnable-track,
+input[type="range"].Detail:focus::-moz-range-track {
     background:    deepskyblue;
 }
-input[type="range"]:focus::-ms-fill-lower,
-input[type="range"]:focus::-ms-fill-upper {
+input[type="range"].Detail:focus::-ms-fill-lower,
+input[type="range"].Detail:focus::-ms-fill-upper  {
     background:    deepskyblue;
+}
+datalist {
+    display:    none  !important;
 }
 /* ----- iFrame ----- */
 iframe {
@@ -511,7 +571,7 @@ html.Fixed > body > .Fix-Top {
             flex-direction:    column;
 }
 .Flex-Box.Column > * {
-    width:    100%  !important;
+    width:    100%;
 }
 .Flex-Box.Row {
        -moz-box-orient:        horizontal;
@@ -601,6 +661,7 @@ ul.NavBar > li:active {
     background:    rgb(230, 230, 230);
 }
 
+/* ----- DropDown Menu ----- */
 .DropDown.Head {
     position:    relative;
 }
@@ -721,82 +782,38 @@ img.UserLogo {
     padding:    0.5em;
 }
 
-/* ----- Search Bar ----- */
-input.SearchBar,
-input[type="search"] {
-    width:    7em;
-}
-input.SearchBar:hover,
-input[type="search"]:hover {
-    width:    15em;
-}
-
-/* ----- Form Radio ----- */
-form ul.Select ul {
-    padding:    0;
-    margin:     0.5em;
-}
-form ul.Select ul li {
-    display:    inline-block;
-    padding:    0.5em;
-    margin:     0  0.25em;
-    cursor:     pointer;
-}
-form ul.Select {
-    margin:        0;
-    padding:       0;
-    text-align:    center;
-}
-form ul.Select li {
-    display:    inline-block;
-    outline:    none;
-}
-form ul.Select li.active {
-    font-weight:    bold;
-    color:          rgb(88, 167, 0)  !important;
-}
-form ul.Select li input[type="radio"] {
-    display:    none;
-}
-form ul.Select li i.fa {
-    display:      block;
-    font-size:    2em;
-    margin:       0.4em;
-}
-form ul.Select li i.fa.fa-circle-o {
-    color:    darkgray;
-}
-
-/* ----- Form Line ----- */
-form > .Row {
+/* ----- Form Row ----- */
+form .Row {
     margin:        auto;
-    padding:       0.5em  0;
     max-width:     100%;
     text-align:    left;
 }
-form > .Row > label[for] {
+form .Row > * {
+    display:           inline-block;
+    vertical-align:    middle;
+}
+form .Row > label[for] {
     text-align:       center;
-    display:          inline-block;
-    width:            30%;
-    max-width:        30%;
+    width:            28.5%;
+    max-width:        28.5%;
     white-space:      nowrap;
     overflow:         hidden;
     text-overflow:    ellipsis;
 }
-form > .Row > input[type="text"],    form > .Row > input[type="password"],
-form > .Row > input[type="email"],   form > .Row > input[type="url"],
-form > .Row > input[type="search"],  form > .Row > input[type="number"],
-form > .Row > input[type="range"],   form > .Row > input[type="data"],
-form > .Row > textarea,              form > .Row select   {
-    display:    inline-block;
-    width:      69%;
+form .Row > input[type="text"],    form .Row > input[type="password"],
+form .Row > input[type="email"],   form .Row > input[type="url"],
+form .Row > input[type="search"],  form .Row > input[type="number"],
+form .Row > input[type="range"],   form .Row > input[type="data"],
+form .Row > textarea,              form .Row select   {
+    width:      68.5%;
 }
-form > .Row.Grid-Row > .Grid-Column {
+form .Row.Grid-Row > .Grid-Column {
     padding-left:    0.5em;
 }
-form > .Row.Grid-Row > .Grid-Column:first-child {
+form .Row.Grid-Row > .Grid-Column:first-child {
     padding:    0;
 }
+
 /* ---------- Tab Control ---------- */
 .Tab > ol {
     padding:        0;
@@ -974,32 +991,32 @@ form > .Row.Grid-Row > .Grid-Column:first-child {
     box-shadow:    0  0  25px  gray;
 }
 .Rotate-90 {
-    -moz-transform:       rotate(90deg);
-    -o-transform:         rotate(90deg);
+       -moz-transform:    rotate(90deg);
+         -o-transform:    rotate(90deg);
     -webkit-transform:    rotate(90deg);
-    transform:            rotate(90deg);
-    filter:               progid: DXImageTransform.Microsoft.BasicImage(rotation=1);
+            transform:    rotate(90deg);
+            filter:       progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
 }
 .Rotate-180 {
-    -moz-transform:       rotate(180deg);
-    -o-transform:         rotate(180deg);
+       -moz-transform:    rotate(180deg);
+         -o-transform:    rotate(180deg);
     -webkit-transform:    rotate(180deg);
-    transform:            rotate(180deg);
-    filter:               progid: DXImageTransform.Microsoft.BasicImage(rotation=2);
+            transform:    rotate(180deg);
+            filter:       progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
 }
 .Flip-Y {
-    -moz-transform:       scale(-1，1);
-    -o-transform:         scale(-1，1);
+       -moz-transform:    scale(-1，1);
+         -o-transform:    scale(-1，1);
     -webkit-transform:    scale(-1，1);
-    transform:            scale(-1，1);
-    filter:               FlipH(); 
+            transform:    scale(-1，1);
+            filter:       FlipH(); 
 }
 .Flip-X {
-    -moz-transform:       scale(1，-1);
-    -o-transform:         scale(1，-1);
+       -moz-transform:    scale(1，-1);
+         -o-transform:    scale(1，-1);
     -webkit-transform:    scale(1，-1);
-    transform:            scale(1，-1);
-    filter:               FlipV(); 
+            transform:    scale(1，-1);
+            filter:       FlipV(); 
 }
 .Reflect {
     -webkit-box-reflect:    below  0px  -webkit-gradient(
@@ -1008,16 +1025,30 @@ form > .Row.Grid-Row > .Grid-Column:first-child {
         from(transparent), to(rgba(250, 250, 250, 0.1))
     );
 }
+/* ----- Background ----- */
+.Background-Image {
+    background-position:    center;
+    background-repeat:      no-repeat;
+    background-size:        contain;
+    background-color:       transparent;
+    min-height:             10em;
+    min-width:              15em;
+}
 /* ----- Icon ----- */
 /*  Font Awesome 4.x  Aequilate Font Fix  */
-.fa {
-    width:     1em;
-    height:    1em;
+.Icon, .fa {
+    display:       inline-block;
+    max-width:     1em  !important;
+    max-height:    1em  !important;
 }
 /* ----- Responsive Design ----- */
 @media (max-width:  540px) {
     .No_Mobile {
         display:    none  !important;
+    }
+    .Icon {
+        max-width:     2.5em  !important;
+        max-height:    2.5em  !important;
     }
 }
 @media (min-width:  600px) {
@@ -1047,5 +1078,8 @@ body .Session {
     display:    none;
 }
 body.Session .Session ~ * {
+    display:    none;
+}
+body > .Dialog {
     display:    none;
 }
