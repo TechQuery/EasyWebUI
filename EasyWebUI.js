@@ -116,7 +116,7 @@
         return this;
     };
 
-    $(document).ready(function () {
+    $(DOM).ready(function () {
         Need_Fix = isNaN(
             parseInt( $('body').css(CSS_Attribute.Prefix + 'flex') )
         );
@@ -125,31 +125,35 @@
     });
 
 /* ---------- Input Range 补丁 ---------- */
+    function Pseudo_Bind() {
+        var iStyleSheet = $.cssPseudo([arguments[0]]),
+            iStyle = [ ];
+
+        for (var i = 0;  i < iStyleSheet.length;  i++)
+            if ($.inArray(iStyleSheet[i].pseudo, 'before') > -1)
+                iStyle.push(iStyleSheet[i].style);
+
+        $(this).change(function () {
+            var iPercent = ((this.value / this.max) * 100) + '%';
+
+            for (var i = 0;  i < iStyle.length;  i++)
+                iStyle[i].setProperty('width', iPercent, 'important');
+        });
+    }
+
+    Pseudo_Bind.No_Bug = (Math.floor($.browser.webkit) > 533);
+
     $.fn.Range = function () {
         return  this.each(function () {
                 var $_This = $(this);
 
                 //  Fill-Lower for Gecko and WebKit
-                if (! $_This.hasClass('Detail'))
+                if (Pseudo_Bind.No_Bug && (! $_This.hasClass('Detail')))
                     $_This.cssRule({
                         ':before': {
-                            width:    (($_This[0].value / $_This[0].max) * 100) + '%'
+                            width:    (($_This[0].value / $_This[0].max) * 100) + '%  !important'
                         }
-                    },  function () {
-                        var iStyleSheet = $.cssPseudo([arguments[0]]),
-                            iStyle = [ ];
-
-                        for (var i = 0;  i < iStyleSheet.length;  i++)
-                            if ($.inArray(iStyleSheet[i].pseudo, 'before') > -1)
-                                iStyle.push(iStyleSheet[i].style);
-
-                        $(this).change(function () {
-                            var iPercent = ((this.value / this.max) * 100) + '%';
-
-                            for (var i = 0;  i < iStyle.length;  i++)
-                                iStyle[i].setProperty('width', iPercent, 'important');
-                        });
-                    });
+                    }, Pseudo_Bind);
 
                 //  Data-List for All Cores
                 var $_List = $('<datalist />', {
