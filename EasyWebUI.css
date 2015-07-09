@@ -8,7 +8,7 @@
  *    and can be used in the Web UI development of
  *    Any Platform.
  *
- *    [Version]    v1.0  (2015-6-7)
+ *    [Version]    v1.0  (2015-7-9)
  *
  *    [Require]    CSS 2.1  (Best Effect with CSS 3),
  *
@@ -151,10 +151,11 @@ input[type="submit"],  input[type="reset"]  {
             word-break:         break-all;
             background:         rgb(88, 167, 0);
             color:              white;
-            display:            inline-block;
             padding:            0.5em  1em;
-            border:             0;
+            border:             none;
             border-radius:      5px;
+            display:            inline-block;
+            margin:             0  0.5em;
 }
 input[type="button"]:hover,  input[type="button"]:active,
 button:hover,                button:active,
@@ -173,9 +174,10 @@ button > *,  a.Button > *  {
 }
 input[type="submit"],
 button[type="submit"] {
-    display:    block;
-    width:      50%  !important;
-    margin:     1em  auto;
+    display:      block;
+    max-width:    50%  !important;
+    min-width:    10em;
+    margin:       1em  auto;
 }
 /* --- Text Input --- */
 input[type="text"],   input[type="password"],
@@ -409,7 +411,7 @@ article:after,   section:after, aside:after {
 .Ellipsis,
 .Ellipsis a,  .Ellipsis span,
 .Ellipsis li, .Ellipsis td {
-      overflow:         hidden;
+    overflow:         hidden;
     white-space:      nowrap;
   	text-overflow:    ellipsis;
 }
@@ -472,65 +474,65 @@ html.Fixed > body > .Fix-Top {
     padding:    1em  0;
 }
 .Column_1-1 {
-    max-width:     100%;
+    width:     100%;
     text-align:    left  !important;
 }
 .Column_1-2 {
-    max-width:    50%;
+    width:    50%;
 }
 .Column_1-3 {
-    max-width:    33.3%;
+    width:    33.3%;
 }
 .Column_2-3 {
-    max-width:    66.6%;
+    width:    66.6%;
 }
 .Column_1-4 {
-    max-width:    25%;
+    width:    25%;
 }
 .Column_3-4 {
-    max-width:    75%;
+    width:    75%;
 }
 .Column_1-5 {
-    max-width:    20%;
+    width:    20%;
 }
 .Column_4-5 {
-    max-width:    80%;
+    width:    80%;
 }
 .Column_2-5 {
-    max-width:    40%;
+    width:    40%;
 }
 .Column_3-5 {
-    max-width:    60%;
+    width:    60%;
 }
 .Column_1-6 {
-    max-width:    16.6%;
+    width:    16.6%;
 }
 .Column_5-6 {
-    max-width:    83.3%;
+    width:    83.3%;
 }
 .Column_1-7 {
-    max-width:    14.2%;
+    width:    14.2%;
 }
 .Column_6-7 {
-    max-width:    85.7%;
+    width:    85.7%;
 }
 .Column_3-7 {
-    max-width:    42.8%;
+    width:    42.8%;
 }
 .Column_4-7 {
-    max-width:    57.1%;
+    width:    57.1%;
 }
 .Column_4-9 {
-    max-width:    44.4%;
+    width:    44.4%;
 }
 .Column_5-9 {
-    max-width:    55.5%;
+    width:    55.5%;
 }
 .Column_3-10 {
-    max-width:    30%;
+    width:    30%;
 }
 .Column_11-20 {
-    max-width:    55%;
+    width:    55%;
 }
 /* ----- Item Box ----- */
 .Item-Box {
@@ -543,6 +545,7 @@ html.Fixed > body > .Fix-Top {
     box-shadow:    1px  2px  3px  rgb(200, 200, 200);
     transition:    border-color  ease-in-out  .15s,
                    box-shadow    ease-in-out  .15s;
+    padding:       1em;
 }
 .Item-Box.Visible:hover {
     border-color:    rgb(14, 144, 210);
@@ -584,7 +587,7 @@ html.Fixed > body > .Fix-Top {
             flex-direction:    row;
 }
 .Flex-Box.Row > * {
-    flex-basis:    100%;
+    min-height:    3em;
 }
 .Flex-Box.CenterX {
        -moz-box-pack:           center;
@@ -637,7 +640,7 @@ ul.NavBar {
     padding:       0;
 }
 ul.NavBar > li {
-    float:         left;
+    display:       inline-block;
     padding:       0.5em;
     text-align:    center;
     cursor:        pointer;
@@ -716,10 +719,12 @@ ul.Content_Nav {
     margin:         0  0.5em;
 }
 
-.Logo > img,  .Logo > a > img {
-    display:       inline-block;
-    max-height:    100%;
-    max-width:     100%;
+img.Logo,  .Logo img  {
+    display:           inline-block;
+    vertical-align:    middle;
+    padding:           0.5em;
+    max-height:        100%;
+    max-width:         100%;
 }
 img.UserLogo {
     max-height:        2.5em;
@@ -785,14 +790,15 @@ img.UserLogo {
 
 /* ----- Form Row ----- */
 form .Row {
-    margin:        auto;
+    margin:        16px  auto;
     max-width:     100%;
     text-align:    left;
-    padding:       0.25em  0;
+    font-size:     0;
 }
 form .Row > * {
     display:           inline-block;
     vertical-align:    middle;
+    font-size:         18px;
 }
 form .Row > label[for] {
     text-align:       center;
@@ -804,8 +810,8 @@ form .Row > label[for] {
 }
 form .Row > input[type="text"],    form .Row > input[type="password"],
 form .Row > input[type="email"],   form .Row > input[type="url"],
-form .Row > input[type="search"],  form .Row > input[type="number"],
-form .Row > input[type="range"],   form .Row > input[type="data"],
+form .Row > input[type="search"],  form .Row > input[type="tel"],
+form .Row > input[type="number"],  form .Row > input[type="range"],
 form .Row > textarea,              form .Row select   {
     width:      68.5%;
 }
@@ -817,6 +823,9 @@ form .Row.Grid-Row > .Grid-Column:first-child {
 }
 
 /* ---------- Tab Control ---------- */
+.Tab,  .Tab > div  {
+    min-height:    10em;
+}
 .Tab > ol {
     padding:        0;
     margin:         0  0  -1px  0;
@@ -871,11 +880,11 @@ form .Row.Grid-Row > .Grid-Column:first-child {
     list-style:    none;
 }
 /* ----- Button Mode ----- */
-.Tab > ol {
+.Tab.Button > ol {
     font-size:    0;
 }
-.Tab > ol > li,
-.Tab > ol > li.opened {
+.Tab.Button > ol > li,
+.Tab.Button > ol > li.opened {
     margin:           0;
     border:           1px  solid  lightgray;
     border-radius:    0;
@@ -1039,9 +1048,13 @@ form .Row.Grid-Row > .Grid-Column:first-child {
 /* ----- Icon ----- */
 /*  Font Awesome 4.x  Aequilate Font Fix  */
 .Icon, .fa {
-    display:       inline-block;
-    max-width:     1em  !important;
-    max-height:    1em  !important;
+    display:           inline-block;
+    vertical-align:    middle;
+    margin:            0.5em;
+    width:             1em;
+    max-width:         100%  !important;
+    height:            1em;
+    max-height:        100%  !important;
 }
 /* ----- Responsive Design ----- */
 @media (max-width:  540px) {
@@ -1049,8 +1062,10 @@ form .Row.Grid-Row > .Grid-Column:first-child {
         display:    none  !important;
     }
     .Icon {
-        max-width:     2.5em  !important;
-        max-height:    2.5em  !important;
+        width:         2.5em;
+        max-width:     100%  !important;
+        height:        2.5em;
+        max-height:    100%  !important;
     }
 }
 @media (min-width:  600px) {
