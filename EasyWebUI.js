@@ -1,6 +1,22 @@
+//
+//          >>>  EasyWebUI Component Library  <<<
+//
+//
+//      [Version]     v0.8  (2015-7-29)  Stable
+//
+//      [Based on]    iQuery v1  or  jQuery (with jQuery+)
+//
+//      [Usage]       A jQuery Plugin Library which almost
+//                    isn't dependent on EasyWebUI.css
+//
+//
+//            (C)2014-2015    shiy2008@gmail.com
+//
+
+
 (function (BOM, DOM, $) {
 
-/* ---------- Flex Box 补丁 ---------- */
+/* ---------- Flex Box 补丁  v0.2 ---------- */
 
     var CSS_Attribute = {
             Float:        {
@@ -124,7 +140,7 @@
         if (Need_Fix)  $('.Flex-Box').each(FlexFix);
     });
 
-/* ---------- Input Range 补丁 ---------- */
+/* ---------- Input Range 补丁  v0.1 ---------- */
     function Pseudo_Bind() {
         var iStyleSheet = $.cssPseudo([arguments[0]]),
             iStyle = [ ];
@@ -157,7 +173,7 @@
 
                 //  Data-List for All Cores
                 var $_List = $('<datalist />', {
-                        id:    'Range_' + $.uid()
+                        id:    $.guid('Range')
                     });
 
                 $_This.attr('list', $_List[0].id);
@@ -176,11 +192,83 @@
             });
     };
 
-})(self,  self.document,  self.jQuery || self.Zepto || self.iQuery);
+})(self,  self.document,  self.jQuery || self.Zepto);
 
 
 
 (function (BOM, DOM, $) {
+
+/* ---------- 密码确认插件  v0.1 ---------- */
+
+    //  By 魏如松
+
+    var $_hint = $('<div class="hint" />').css({
+            position:    'absolute'
+        });
+
+    function correct(color, text) {
+        color = color || 'green' ;
+        text = text || '√' ;
+        this.parent().append(
+            $_hint.clone().css({
+                color:            color,
+                'font-weight':    'bold'
+            }).text(text)
+        );
+    }
+
+    function wrong(color, text) {
+        color = color || 'red';
+        text = text || '×';
+        this.parent().append(
+            $_hint.clone().css({
+                color:            color,
+                'font-weight':    'bold'
+            }).text(text)
+        );
+    }
+
+    $.fn.pwConfirm = function (hintClass, hintColor, hintText) {
+        var $_password = this.find('input[type="password"]');
+        if (! $_password.length)  return this;
+
+        $_password.parent().css('position', 'relative');
+        $_hint.addClass(hintClass);
+        $_password.eq(0).blur(function () {
+            var $_this = $(this);
+
+            //  Check and remove hints when inputting the data.
+            $_this.parent().find('.hint').remove();
+            if (! this.value)  return;
+
+            $_hint.css({
+                left:    ($_this.width() * 0.9) + 'px',
+                top:     ($_this.height() * 0.2) + 'px'
+            });
+            if ( this.checkValidity() )
+                correct.call($_this, hintColor, hintText);
+            else
+                wrong.call($_this, hintColor, hintText);
+        });
+
+        $_password.eq(1).blur(function () {
+            var $_this = $(this);
+
+            $_hint.css({
+                left:    ($_this.width() * 0.9) + 'px',
+                top:     ($_this.height() * 0.2) + 'px'
+            });
+            $_this.parent().find('.hint').remove();
+            if ($_password[0].value  &&  this.checkValidity()) {
+                if ($_password[0].value == this.value)
+                    correct.call($_this, hintColor, hintText);
+                else
+                    wrong.call($_this, hintColor, hintText);
+            }
+        });
+    };
+
+/* ---------- 面板控件  v0.1 ---------- */
 
     $.fn.iPanel = function () {
         var $_This = this.is('.Panel') ? this : this.find('.Panel');
@@ -210,88 +298,78 @@
         });
     };
 
-    $(document).ready(function () {
+/* ---------- 标签页 控件  v0.2 ---------- */
 
-    // ----------- 加载 遮罩 ----------- //
-        $(document.body).addClass('Loaded');
+    $.fn.iTab = function () {
+        return  this.each(function () {
+            var $_Tab = $(this);
+            var $_Button = $_Tab.children('ol').eq(0).children('li'),
+                Tab_Nav_NO = BOM.location.hash.match(/^#Tab_Nav_(\d+)/);
+            Tab_Nav_NO = Tab_Nav_NO  ?  parseInt( Tab_Nav_NO[1] )  :  1;
 
-    // ----------- Input Range 补丁 ----------- //
-        $('form input[type="range"]').Range();
+            if ($_Button.filter('.active').index() != Tab_Nav_NO) {
+                $_Button.removeClass('active')
+                    .eq(Tab_Nav_NO - 1).addClass('active');
+                $_Tab.children('div').removeClass('active')
+                    .eq(Tab_Nav_NO - 1).addClass('active');
+            }
+            $_Button.addClass('opened').click(function (iEvent) {
+                var $_This_Head = $(this);
+                var $_Tab_Head = $_This_Head.siblings('li'),
+                    $_Tab_Body = $_This_Head.parent().siblings('div');
+                var $_This_Body = $_Tab_Body.filter(':visible');
 
-    // ----------- 面板 控件 ----------- //
-        $('.Panel').iPanel();
-
-    // ----------- 标签页 控件 ----------- //
-        var $_Tab_0 = $('.Tab.Nav').eq(0),
-            Tab_Nav_NO = top.location.hash.match(/^#Tab_Nav_(\d+)/);
-        Tab_Nav_NO = Tab_Nav_NO ? parseInt( Tab_Nav_NO[1] ) : 1;
-        if ($_Tab_0.find('ol > li.active').index() != Tab_Nav_NO) {
-            $_Tab_0.find('ol > li').removeClass('active')
-                .eq(Tab_Nav_NO - 1).addClass('active');
-            $_Tab_0.children('div').removeClass('active')
-                .eq(Tab_Nav_NO - 1).addClass('active');
-        }
-        $('.Tab > ol > li').addClass('opened').mousedown(function () {
-            var $_This_Head = $(this);
-            var $_Tab_Head = $_This_Head.parentsUntil('.Tab').children('li'),
-                $_Tab_Body = $_This_Head.parentsUntil('.Tab').siblings('div');
-            var $_This_Body = $_Tab_Body.filter(':visible');
-
-            switch ( arguments[0].which ) {
-                case 1:    {
-                    $_Tab_Head.addClass('opened');
-                    $_This_Head.addClass('active').siblings().removeClass('active');
-                    $_This_Body.removeClass('active');
-                    $_Tab_Body.eq( $_This_Head.index() ).addClass('active');
-                }    break;
-                case 3:    if ( $_This_Body.length ) {
-                        $_Tab_Head.removeClass('active opened');
-                        $_This_Body.toggleClass('active');
+                switch ( iEvent.which ) {
+                    case 1:    {
+                        $_Tab_Head.addClass('opened');
+                        $_This_Head.addClass('active').siblings().removeClass('active');
+                        $_This_Body.removeClass('active');
+                        $_Tab_Body.eq( $_This_Head.index() ).addClass('active');
+                        break;
                     }
-            }
-            arguments[0].stopPropagation();
-        });
-
-    // ----------- 标签选择 控件 ----------- //
-        $('.Select').each(function () {
-            var $Tips = $(this).children('span.Tips');
-            var $Tips_DV = $Tips.text();
-
-            function Show_Tips() {
-                if ($Tips.length)  $Tips.text(
-                    this.data('tips') + $Tips_DV
-                );
-            }
-            Show_Tips.call( $(this).find('ul > li.focus') );
-
-            $(this).find('ul > li').click(function () {
-                var $_This = $(this);
-                var $focus = $_This.parent().find('li.focus');
-                var this_Class = $_This.attr('class'),
-                    focus_Class = $focus.attr('class');
-                $focus.attr('class', this_Class);
-                $_This.attr('class', focus_Class);
-
-                Show_Tips.call( $_This );
+                    case 3:    if ( $_This_Body.length ) {
+                        $_Tab_Head.removeClass('active opened');
+                        $_This_Body[
+                            ($_This_Body.hasClass('active') ? 'remove' : 'add') + 'Class'
+                        ]('active');
+                    }
+                }
+                iEvent.stopPropagation();
             });
         });
+    };
 
-    // ----------- “禁止选中”特性的兼容 ----------- //
-        function Event_Break() {  return false;  }
+/* ---------- 元素禁止选中  v0.1 ---------- */
 
-        var $_No_Select = $('button, .No_Select, .Panel > .Head, .Tab > ol');
+    $.fn.noSelect = function () {
+        return  this.attr('unSelectable', 'on').css({
+               '-moz-user-select':      '-moz-none',
+             '-khtml-user-select':           'none',
+            '-webkit-user-select':           'none',
+                 '-o-user-select':           'none',
+                '-ms-user-select':           'none',
+                    'user-select':           'none',
+            '-webkit-touch-callout':         'none'
+        }).bind('selectStart', false).bind('contextmenu', false)
+            .css('cursor', 'default');
+    };
 
-        if ( $_No_Select.length )
-            $_No_Select.attr('unSelectable', 'on').css({
-                '-moz-user-select':         '-moz-none',
-                '-khtml-user-select':       'none',
-                '-webkit-user-select':      'none',
-                '-o-user-select':           'none',
-                '-ms-user-select':          'none',
-                'user-select':              'none',
-                '-webkit-touch-callout':    'none'
-            }).bind('selectStart', Event_Break).bind('contextmenu', Event_Break)
-                .css('cursor', 'default');
+
+/* ---------- 首屏渲染 自动启用组件集 ---------- */
+    $(DOM).ready(function () {
+
+        $(DOM.body).addClass('Loaded');
+
+        $('form input[type="password"]').pwConfirm();
+
+        $('form input[type="range"]').Range();
+
+        $('.Panel').iPanel();
+
+        $('.Tab').iTab();
+
+        $('*:button,  a.Button,  .No_Select,  .Panel > .Head,  .Tab > ol')
+            .noSelect();
     });
 
-})(self,  self.document,  self.jQuery || self.Zepto || self.iQuery);
+})(self,  self.document,  self.jQuery || self.Zepto);
