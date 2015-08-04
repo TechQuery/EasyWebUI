@@ -2,7 +2,7 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v0.8  (2015-7-29)  Stable
+//      [Version]     v1.0  (2015-8-4)  Stable
 //
 //      [Based on]    iQuery v1  or  jQuery (with jQuery+)
 //
@@ -198,12 +198,14 @@
 
 (function (BOM, DOM, $) {
 
-/* ---------- 密码确认插件  v0.1 ---------- */
+    /* ---------- 密码确认插件  v0.3 ---------- */
 
     //  By 魏如松
 
     var $_hint = $('<div class="hint" />').css({
-            position:    'absolute'
+            position:    'absolute',
+            width:       '0.625em',
+            display:     'block'
         });
 
     function correct(color, text) {
@@ -229,44 +231,69 @@
     }
 
     $.fn.pwConfirm = function (hintClass, hintColor, hintText) {
-        var $_password = this.find('input[type="password"]');
-        if (! $_password.length)  return this;
-
-        $_password.parent().css('position', 'relative');
-        $_hint.addClass(hintClass);
-        $_password.eq(0).blur(function () {
-            var $_this = $(this);
-
-            //  Check and remove hints when inputting the data.
-            $_this.parent().find('.hint').remove();
-            if (! this.value)  return;
-
-            $_hint.css({
-                left:    ($_this.width() * 0.9) + 'px',
-                top:     ($_this.height() * 0.2) + 'px'
+		var pwGroup = { },
+            $_passwordAll = this.find('input[type="password"][name]');
+		
+		//  密码明文查看
+		var $_visible = $('<div class="visible" />').css({
+                position:       'absolute',
+                right:          '5%',
+                top:            '8%',
+                'z-index':      1000000,
+                'font-size':    '1.875em',
+                cursor:         'pointer' 
             });
-            if ( this.checkValidity() )
-                correct.call($_this, hintColor, hintText);
-            else
-                wrong.call($_this, hintColor, hintText);
-        });
-
-        $_password.eq(1).blur(function () {
-            var $_this = $(this);
-
-            $_hint.css({
-                left:    ($_this.width() * 0.9) + 'px',
-                top:     ($_this.height() * 0.2) + 'px'
-            });
-            $_this.parent().find('.hint').remove();
-            if ($_password[0].value  &&  this.checkValidity()) {
-                if ($_password[0].value == this.value)
-                    correct.call($_this, hintColor, hintText);
+		$_passwordAll.parent().css('position', 'relative').append( $_visible.clone() )
+            .find('.visible').html('&#10002;').click(function(){
+                if($_visible.html() == '✒')
+                    $_visible.html('&#10001;').siblings('input').attr('type', 'text');
                 else
-                    wrong.call($_this, hintColor, hintText);
-            }
-        });
+                    $_visible.html('&#10002;').siblings('input').attr('type', 'password');
+            });
+		
+        //  密码输入验证
+		$_passwordAll.each(function (){
+			var name = this.name;
+			if (! pwGroup[name])
+				pwGroup[name] = $_passwordAll.filter('[name="' + name + '"]');
+			else 
+				return;
+
+			var $_password = pwGroup[name];
+			
+			$_hint.addClass(hintClass);
+
+			var _Complete_ = 0;
+			$_password.blur(function () {
+				var $_this = $(this);
+				$_this.parent().find('.hint').remove();
+				$_hint.css({
+					left:    ($_this.position().left + $_this.width() - $_hint.width()) + 'px',
+					top:     ($_this.position().top + $_this.height() * 0.2) + 'px'
+				});
+
+				if (! this.value) return;
+
+				if (! this.checkValidity())
+					wrong.call($_this,hintColor,hintText);
+				else if (++_Complete_ == 2) {
+					$_this.parent().find('.hint').remove();
+					var $_other = $_password.not(this);
+
+					if( this.value == $_other[0].value)
+						correct.call($_this,hintColor,hintText);
+					else
+						wrong.call($_this,hintColor,hintText);
+
+					_Complete_ = 0;
+				} else
+					correct.call($_this,hintColor,hintText);
+			});
+		});
+
+		return this;
     };
+
 
 /* ---------- 面板控件  v0.1 ---------- */
 
@@ -305,7 +332,7 @@
             var $_Tab = $(this);
             var $_Button = $_Tab.children('ol').eq(0).children('li'),
                 Tab_Nav_NO = BOM.location.hash.match(/^#Tab_Nav_(\d+)/);
-            Tab_Nav_NO = Tab_Nav_NO  ?  parseInt( Tab_Nav_NO[1] )  :  1;
+            Tab_Nav_NO = Tab_Nav_NO  ?  (parseInt(Tab_Nav_NO[1]) - 1)  :  0;
 
             if ($_Button.filter('.active').index() != Tab_Nav_NO) {
                 $_Button.removeClass('active')
@@ -315,8 +342,8 @@
             }
             $_Button.addClass('opened').click(function (iEvent) {
                 var $_This_Head = $(this);
-                var $_Tab_Head = $_This_Head.siblings('li'),
-                    $_Tab_Body = $_This_Head.parent().siblings('div');
+                var $_Tab_Head = $_This_Head.siblings('li').addBack(),
+                    $_Tab_Body = $_This_Head.parent().siblings('div').addBack();
                 var $_This_Body = $_Tab_Body.filter(':visible');
 
                 switch ( iEvent.which ) {

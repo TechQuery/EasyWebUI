@@ -8,7 +8,7 @@
  *    and can be used in the Web UI development of
  *    Any Platform.
  *
- *    [Version]    v1.0  (2015-7-9)
+ *    [Version]    v1.0  (2015-8-4)
  *
  *    [Require]    CSS 2.1  (Best Effect with CSS 3),
  *
@@ -72,7 +72,7 @@ em,  output  {
     font-weight:    bold;
 }
 hr {
-    width:     80%;
+    margin:    1.5em  3em  !important;
     border:    1px  solid  darkgray;
 }
 /* --- Quote --- */
@@ -132,6 +132,7 @@ label {
     word-spacing:    0.5em;
 }
 fieldset {
+    margin:     1em  0;
     padding:    1em;
 }
 fieldset > legend {
@@ -172,11 +173,10 @@ button > *,  a.Button > *  {
     max-height:        1.5em;
     margin:            0  0.5em;
 }
-input[type="submit"],
-button[type="submit"] {
+input[type="submit"], button[type="submit"] {
     display:      block;
     max-width:    50%  !important;
-    min-width:    10em;
+    min-width:    8em;
     margin:       1em  auto;
 }
 /* --- Text Input --- */
@@ -450,23 +450,23 @@ html.Fixed > body > .Fix-Top {
 
 /* ----- Grid Column ----- */
 .Grid-Row {
-    display:    table;
+    display:    table  !important;
     width:      100%;
-    margin:     0  auto;
+    margin:     0  auto  !important;
     padding:    0  !important;
 }
 .Grid-Row > .Grid-Column {
-    display:           table-cell;
+    display:           table-cell  !important;
     vertical-align:    top;
 }
 .Grid-Row.CenterY > .Grid-Column,
 .Grid-Column.CenterY {
-    float:             none;
+    float:             none  !important;
     vertical-align:    middle;
 }
 .Grid-Row.Bottom > .Grid-Column,
 .Grid-Column.Bottom {
-    float:             none;
+    float:             none  !important;
     vertical-align:    bottom;
 }
 .Grid-Column > p {
@@ -474,7 +474,7 @@ html.Fixed > body > .Fix-Top {
     padding:    1em  0;
 }
 .Column_1-1 {
-    width:     100%;
+    width:         100%;
     text-align:    left  !important;
 }
 .Column_1-2 {
@@ -795,6 +795,10 @@ form .Row {
     text-align:    left;
     font-size:     0;
 }
+.Flex-Box.Row {
+    margin:       auto;
+    font-size:    16px;
+}
 form .Row > * {
     display:           inline-block;
     vertical-align:    middle;
@@ -955,7 +959,7 @@ form .Row.Grid-Row > .Grid-Column:first-child {
     border-color:    rgb(53, 52, 57)  !important;
 }
 .Black_O {
-    background:      rgb(53, 52, 57);  !important;
+    background:      rgb(53, 52, 57)  !important;
     color:           white  !important;
     border-color:    transparent  !important;
 }
@@ -971,6 +975,11 @@ form .Row.Grid-Row > .Grid-Column:first-child {
 .Green {
     color:           rgb(88, 167, 0)  !important;
     border-color:    rgb(88, 167, 0)  !important;
+}
+.Green_O {
+    background:      rgb(88, 167, 0)  !important;
+    color:           white  !important;
+    border-color:    transparent  !important;
 }
 .Blue {
     color:           rgb(26, 121, 224)  !important;
@@ -997,8 +1006,7 @@ form .Row.Grid-Row > .Grid-Column:first-child {
     padding:          1em  !important;
     text-align:       center;
 }
-.Halo,
-.Select ul > li:hover {
+.Halo {
     box-shadow:    0  0  25px  gray;
 }
 .Rotate-90 {
@@ -1056,6 +1064,22 @@ form .Row.Grid-Row > .Grid-Column:first-child {
     height:            1em;
     max-height:        100%  !important;
 }
+.Icon:before {
+    font-style:    normal;
+    font-size:     1.5em;
+}
+.Icon.Mail:before {
+    content:    '\2709';
+}
+.Icon.Heart:before {
+    content:    '\2661';
+}
+.Icon.Star:before {
+    content:    '\2730';
+}
+.Icon.Return:before {
+    content:    '\21e6';
+}
 /* ----- Responsive Design ----- */
 @media (max-width:  540px) {
     .No_Mobile {
@@ -1076,7 +1100,6 @@ form .Row.Grid-Row > .Grid-Column:first-child {
 }
 
 
-
 /* ----------- App Framework ---------- */
 body:before {
     content:       " ";
@@ -1092,10 +1115,10 @@ body.Loaded:before {
     content:    none;
 }
 body .Session {
-    display:    none;
+    display:    none  !important;
 }
 body.Session .Session ~ * {
-    display:    none;
+    display:    none  !important;
 }
 body > .Dialog {
     display:    none;
