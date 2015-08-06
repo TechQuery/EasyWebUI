@@ -8,7 +8,7 @@
  *    and can be used in the Web UI development of
  *    Any Platform.
  *
- *    [Version]    v1.0  (2015-8-4)
+ *    [Version]    v1.0  (2015-8-6)
  *
  *    [Require]    CSS 2.1  (Best Effect with CSS 3),
  *
@@ -539,7 +539,7 @@ html.Fixed > body > .Fix-Top {
     display:    inline-block;
     margin:     0  1%  0.5em;
 }
-.Item-Box.Visible {
+.Item-Box.visible {
     background:    white;
     border:        1px  solid  rgb(215, 215, 215);
     box-shadow:    1px  2px  3px  rgb(200, 200, 200);
@@ -547,7 +547,7 @@ html.Fixed > body > .Fix-Top {
                    box-shadow    ease-in-out  .15s;
     padding:       1em;
 }
-.Item-Box.Visible:hover {
+.Item-Box.visible:hover {
     border-color:    rgb(14, 144, 210);
     box-shadow:      inset  0  1px  1px  rgba(0, 0, 0, 0.075),
                      0  0  8px  rgba(14, 144, 210, 0.6);
@@ -645,6 +645,9 @@ ul.NavBar > li {
     text-align:    center;
     cursor:        pointer;
 }
+ul.NavBar > li.Separator:before {
+    content:    "|";
+}
 ul.NavBar > li * {
     cursor:    auto;
 }
@@ -653,7 +656,7 @@ ul.NavBar > li > a {
     width:      100%;
     outline:    none;
 }
-ul.NavBar > li:nth-child(n+2) > a {
+ul.NavBar.visible > li:nth-child(n+2) > a {
     border-left:    1px  solid  rgb(200, 200, 200);
 }
 ul.NavBar > li > a:active,
@@ -667,7 +670,8 @@ ul.NavBar > li:active {
 
 /* ----- DropDown Menu ----- */
 .DropDown.Head {
-    position:    relative;
+    position:      relative;
+    min-height:    1.5em;
 }
 .DropDown.Body {
     display:       none;
@@ -681,6 +685,7 @@ ul.NavBar > li:active {
 .DropDown.Head:hover > .DropDown.Body {
     display:       block;
     background:    white;
+    color:         black;
 }
 ul.DropDown.Body {
     margin:        0;
@@ -692,9 +697,61 @@ ul.DropDown.Body > li > a {
     padding:            1em  2em;
     text-decoration:    none;
 }
-ul.DropDown.Body > li > a:hover {
+ul.DropDown.Body > li > a:hover,
+ul.DropDown.Body > li > a:focus  {
     background:    lightgray;
     color:         white;
+}
+/*
+    ul.NavBar has same appearance as .DropDown.Body on Mobile Device
+*/
+@media (max-width:  640px) {
+    .DropDown.Head {
+        font-size:        1.5em;
+        border:           1px  solid;
+        border-radius:    5px;
+        width:            1.5em;
+    }
+    .DropDown.Head:before {
+        content:    '\221e';
+    }
+    ul.NavBar {
+        display:       none;
+        position:      absolute;
+        top:           2.5em;
+        left:          -5.5em;
+        z-index:       2000000000;
+        box-shadow:    0  1px  2px  gray;
+    }
+    .DropDown.Head:hover > ul.NavBar {
+        display:       block;
+        background:    white;
+        color:         black;
+        min-width:     7em;
+    }
+    ul.NavBar > li.Separator {
+        border-top:    1px  solid  gray;
+        padding:       0;
+        width:         80%;
+    }
+    ul.NavBar > li.Separator:before {
+        content:    none;
+    }
+    ul.NavBar > li {
+        padding:    0;
+        margin:     5%;
+        width:      90%;
+    }
+    ul.NavBar > li > a {
+        text-decoration:    none;
+        color:              black  !important;
+        border:             none  !important;
+    }
+    ul.NavBar > li > a:hover,
+    ul.NavBar > li > a:focus  {
+        background:    lightgray;
+        color:         white;
+    }
 }
 
 ul.Content_Nav {
