@@ -2,7 +2,7 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v1.0  (2015-8-4)  Stable
+//      [Version]     v1.0  (2015-8-7)  Stable
 //
 //      [Based on]    iQuery v1  or  jQuery (with jQuery+)
 //
@@ -87,7 +87,7 @@
                         ) :
                         'block'
                 });
-                
+
             var _Index_ = Flex_Child.push({$_DOM:  $_This}) - 1,
                 _Length_ = $_This[Size_Name.length]();
 
@@ -202,96 +202,81 @@
 
     //  By 魏如松
 
-    var $_hint = $('<div class="hint" />').css({
-            position:    'absolute',
-            width:       '0.625em',
-            display:     'block'
+    var $_Hint = $('<div class="Hint" />').css({
+            position:         'absolute',
+            width:            '0.625em',
+            'font-weight':    'bold'
         });
 
-    function correct(color, text) {
-        color = color || 'green' ;
-        text = text || '√' ;
-        this.parent().append(
-            $_hint.clone().css({
-                color:            color,
-                'font-weight':    'bold'
-            }).text(text)
+    function showHint() {
+        var iPosition = this.position();
+
+        $_Hint.clone().text( arguments[0] ).css({
+            color:    arguments[1],
+            left:     (iPosition.left + this.width() - $_Hint.width()) + 'px',
+            top:      (iPosition.top + this.height() * 0.2) + 'px'
+        }).appendTo(
+            this.parent()
         );
     }
 
-    function wrong(color, text) {
-        color = color || 'red';
-        text = text || '×';
-        this.parent().append(
-            $_hint.clone().css({
-                color:            color,
-                'font-weight':    'bold'
-            }).text(text)
-        );
-    }
-
-    $.fn.pwConfirm = function (hintClass, hintColor, hintText) {
-		var pwGroup = { },
+    $.fn.pwConfirm = function () {
+        var pwGroup = { },
             $_passwordAll = this.find('input[type="password"][name]');
-		
-		//  密码明文查看
-		var $_visible = $('<div class="visible" />').css({
+
+        //  密码明文查看
+        var $_visible = $('<div class="visible" />').css({
                 position:       'absolute',
                 right:          '5%',
                 top:            '8%',
                 'z-index':      1000000,
-                'font-size':    '1.875em',
-                cursor:         'pointer' 
+                'font-size':    26,
+                cursor:         'pointer'
             });
-		$_passwordAll.parent().css('position', 'relative').append( $_visible.clone() )
+        $_passwordAll.parent().css('position', 'relative').append( $_visible.clone() )
             .find('.visible').html('&#10002;').click(function(){
-                if($_visible.html() == '✒')
-                    $_visible.html('&#10001;').siblings('input').attr('type', 'text');
+                var $_this = $(this);
+
+                if($_this.text() == '✒')
+                    $_this.html('&#10001;').siblings('input').attr('type', 'text');
                 else
-                    $_visible.html('&#10002;').siblings('input').attr('type', 'password');
+                    $_this.html('&#10002;').siblings('input').attr('type', 'password');
             });
-		
+
         //  密码输入验证
-		$_passwordAll.each(function (){
-			var name = this.name;
-			if (! pwGroup[name])
-				pwGroup[name] = $_passwordAll.filter('[name="' + name + '"]');
-			else 
-				return;
+        $_passwordAll.each(function (){
+            if (! pwGroup[this.name])
+                pwGroup[this.name] = $_passwordAll.filter('[name="' + this.name + '"]');
+            else
+                return;
 
-			var $_password = pwGroup[name];
-			
-			$_hint.addClass(hintClass);
+            var $_password = pwGroup[this.name],
+                _Complete_ = 0;
 
-			var _Complete_ = 0;
-			$_password.blur(function () {
-				var $_this = $(this);
-				$_this.parent().find('.hint').remove();
-				$_hint.css({
-					left:    ($_this.position().left + $_this.width() - $_hint.width()) + 'px',
-					top:     ($_this.position().top + $_this.height() * 0.2) + 'px'
-				});
+            $_password.blur(function () {
+                var $_this = $(this);
 
-				if (! this.value) return;
+                $_this.parent().find('.Hint').remove();
 
-				if (! this.checkValidity())
-					wrong.call($_this,hintColor,hintText);
-				else if (++_Complete_ == 2) {
-					$_this.parent().find('.hint').remove();
-					var $_other = $_password.not(this);
+                if (! this.value) return;
 
-					if( this.value == $_other[0].value)
-						correct.call($_this,hintColor,hintText);
-					else
-						wrong.call($_this,hintColor,hintText);
+                if (! this.checkValidity())
+                    showHint.call($_this, '×', 'red');
+                else if (++_Complete_ == 2) {
+                    var $_other = $_password.not(this);
 
-					_Complete_ = 0;
-				} else
-					correct.call($_this,hintColor,hintText);
-			});
-		});
+                    showHint.apply(
+                        $_this,
+                        (this.value == $_other[0].value)  ?  ['√', 'green']  :  ['×', 'red']
+                    );
 
-		return this;
+                    _Complete_ = 0;
+                } else
+                    showHint.call($_this, '√', 'green');
+            });
+        });
+
+        return this;
     };
 
 
@@ -387,7 +372,7 @@
 
         $(DOM.body).addClass('Loaded');
 
-        $('form input[type="password"]').pwConfirm();
+        $('form').pwConfirm();
 
         $('form input[type="range"]').Range();
 
