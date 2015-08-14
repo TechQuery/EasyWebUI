@@ -230,7 +230,7 @@
                 right:          '5%',
                 top:            '8%',
                 'z-index':      1000000,
-                'font-size':    26,
+                'font-size':    '26px',
                 cursor:         'pointer'
             });
         $_passwordAll.parent().css('position', 'relative').append( $_visible.clone() )
@@ -252,6 +252,8 @@
 
             var $_password = pwGroup[this.name],
                 _Complete_ = 0;
+
+            if ($_password.length < 2)  return;
 
             $_password.blur(function () {
                 var $_this = $(this);
