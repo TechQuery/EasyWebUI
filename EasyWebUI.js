@@ -2,7 +2,7 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v1.0  (2015-8-7)  Stable
+//      [Version]     v1.1  (2015-8-24)  Stable
 //
 //      [Based on]    iQuery v1  or  jQuery (with jQuery+)
 //
@@ -312,44 +312,34 @@
         });
     };
 
-/* ---------- 标签页 控件  v0.2 ---------- */
+/* ---------- 标签页 控件  v0.3 ---------- */
 
     $.fn.iTab = function () {
         return  this.each(function () {
-            var $_Tab = $(this);
-            var $_Button = $_Tab.children('ol').eq(0).children('li'),
-                Tab_Nav_NO = BOM.location.hash.match(/^#Tab_Nav_(\d+)/);
-            Tab_Nav_NO = Tab_Nav_NO  ?  (parseInt(Tab_Nav_NO[1]) - 1)  :  0;
+            var iName = $.guid('iTab'),
+                $_Child = $(this).children();
+            var $_Label = $_Child.filter('label'),
+                $_Radio = $_Child.filter('input[type="radio"]').remove();
+            var $_Tab = $_Child.not($_Label).not($_Radio);
 
-            if ($_Button.filter('.active').index() != Tab_Nav_NO) {
-                $_Button.removeClass('active')
-                    .eq(Tab_Nav_NO - 1).addClass('active');
-                $_Tab.children('div').removeClass('active')
-                    .eq(Tab_Nav_NO - 1).addClass('active');
-            }
-            $_Button.addClass('opened').click(function (iEvent) {
-                var $_This_Head = $(this);
-                var $_Tab_Head = $_This_Head.siblings('li').addBack(),
-                    $_Tab_Body = $_This_Head.parent().siblings('div').addBack();
-                var $_This_Body = $_Tab_Body.filter(':visible');
+            $_Label.each(function () {
+                var _GUID_ = $.guid();
 
-                switch ( iEvent.which ) {
-                    case 1:    {
-                        $_Tab_Head.addClass('opened');
-                        $_This_Head.addClass('active').siblings().removeClass('active');
-                        $_This_Body.removeClass('active');
-                        $_Tab_Body.eq( $_This_Head.index() ).addClass('active');
-                        break;
-                    }
-                    case 3:    if ( $_This_Body.length ) {
-                        $_Tab_Head.removeClass('active opened');
-                        $_This_Body[
-                            ($_This_Body.hasClass('active') ? 'remove' : 'add') + 'Class'
-                        ]('active');
-                    }
-                }
-                iEvent.stopPropagation();
-            });
+                $(this).attr('for', _GUID_);
+                var _Radio_ = $('<input type="radio" name="' + iName + '" />').attr('id', _GUID_);
+                var _Tab_ = $_Tab.eq(arguments[0]).before(_Radio_);
+
+                if (! $.browser.modern)
+                    _Radio_.change(function () {
+                        $_Tab.hide();
+                        _Tab_.show();
+                    });
+            }).click(function () {
+                var $_This = $(this);
+
+                if (! $_This.hasClass('active'))
+                    $_This.addClass('active').siblings().removeClass('active');
+            }).filter('.active').click();
         });
     };
 

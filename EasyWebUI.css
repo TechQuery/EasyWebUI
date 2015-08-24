@@ -8,7 +8,7 @@
  *    and can be used in the Web UI development of
  *    Any Platform.
  *
- *    [Version]    v1.0  (2015-8-14)
+ *    [Version]    v1.0  (2015-8-24)
  *
  *    [Require]    CSS 2.1  (Best Effect with CSS 3),
  *
@@ -146,6 +146,8 @@ fieldset > legend {
 input[type="button"],  button,  a.Button,
 input[type="submit"],  input[type="reset"]  {
     -webkit-appearance:         none;
+       -moz-appearance:         none;
+            appearance:         none;
             text-decoration:    none;
             text-align:         center;
             font-size:          1em;
@@ -219,6 +221,8 @@ input.Search:hover, input[type="search"]:hover {
 /* --- Radio & Check --- */
 input[type="radio"], input[type="checkbox"] {
     -webkit-appearance:    none;
+       -moz-appearance:    none;
+            appearance:    none;
             width:         1.5em;
             height:        1.5em;
             border:        1px  solid  gray;
@@ -233,7 +237,7 @@ input[type="checkbox"]:before {
     display:        inline-block;
     width:          100%;
     height:         100%;
-    line-height:    80%;
+    line-height:    70%;
     text-align:     center;
     opacity:        0;
 }
@@ -258,6 +262,8 @@ input[type="file"] {
 */
 input[type="range"] {
     -webkit-appearance:    none;
+       -moz-appearance:    none;
+            appearance:    none;
             width:         100%;
             height:        1.5em;
             background:    transparent;
@@ -308,6 +314,8 @@ input[type="range"]::-ms-fill-upper {
 }
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance:       none;
+       -moz-appearance:       none;
+            appearance:       none;
             background:       white;
             border:           1px  solid  gray;
             height:           1.5em;
@@ -320,6 +328,8 @@ input[type="range"]::-webkit-slider-thumb {
 input[type="range"]::-moz-range-thumb,
 input[type="range"]::-ms-thumb {
     -webkit-appearance:       none;
+       -moz-appearance:       none;
+            appearance:       none;
             background:       white;
             border:           1px  solid  gray;
             height:           1.5em;
@@ -415,14 +425,14 @@ article:after,   section:after, aside:after {
     zoom:           1;
 }
 .CenterX {
-    text-align:    center;
+    text-align:    center  !important;
 }
 .Ellipsis,
 .Ellipsis a,  .Ellipsis span,
 .Ellipsis li, .Ellipsis td {
     overflow:         hidden;
     white-space:      nowrap;
-  	text-overflow:    ellipsis;
+    text-overflow:    ellipsis;
 }
 .Float-L { float:  left; }
 .Float-R { float:  right; }
@@ -893,44 +903,35 @@ form .Row.Grid-Row > .Grid-Column:first-child {
 }
 
 /* ---------- Tab Control ---------- */
-.Tab,  .Tab > div  {
-    min-height:    10em;
-}
-.Tab > ol {
-    padding:        0;
-    margin:         0  0  -1px  0;
-    line-height:    2.3em;
-    text-align:     center;
-}
-.Tab > ol > li {
-    display:          inline;
+.Tab > label {
+    margin-bottom:    -1px;
     padding:          0.5em  1em;
+    line-height:      2.3em;
+    text-align:       center;
     background:       white;
     color:            rgb(118, 118, 119);
     border:           1px  solid  rgb(215, 215, 218);
     box-shadow:       1px  2px  3px  rgb(118, 118, 119);
-    margin-bottom:    -1px;
     cursor:           pointer;
 }
-.Tab > ol > li.opened {
-    border-radius:    5px  5px  0  0;
-    border:           none;
-    box-shadow:       none;
-}
-.Tab > ol > li.active {
+.Tab > label.active {
     background:    rgb(230, 230, 230);
 }
-.Tab > ol > li:hover {
+.Tab > label:hover {
     background:    rgb(200, 200, 200);
 }
-.Tab > div {
+.Tab > .Body,
+.Tab > div,    .Tab > section  {
     padding:          1em;
     overflow:         hidden;
     background:       rgb(230, 230, 230);
     border-radius:    0  5px  5px  5px;
-    display:          none;
 }
-.Tab > div.active {
+.Tab > input[type="radio"],
+.Tab > input[type="radio"] + * {
+    display:    none;
+}
+.Tab > input[type="radio"]:checked + * {
     display:    block;
 }
 
@@ -950,31 +951,20 @@ form .Row.Grid-Row > .Grid-Column:first-child {
     list-style:    none;
 }
 /* ----- Button Mode ----- */
-.Tab.Button > ol {
-    font-size:    0;
-}
-.Tab.Button > ol > li,
-.Tab.Button > ol > li.opened {
-    margin:           0;
+.Tab.Button > label {
+    margin:           0  0.5em;
+    padding:          1.5em;
     border:           1px  solid  lightgray;
     border-radius:    0;
     box-shadow:       none;
     background:       white;
-    display:          inline-block;
-    font-size:        16px;
-    padding:          1.5em;
 }
 /* ----- Monitor Mode ----- */
-.Tab.Monitor > ol {
-    margin:         1em  0;
-    padding:        0;
-    line-height:    normal;
-    font-size:      2em;
-}
-.Tab.Monitor > ol > li {
-    display:          inline-block;
-    margin:           0  1%;
+.Tab.Monitor > label {
+    margin:           1em  1%;
     padding:          0;
+    line-height:      normal;
+    font-size:        2em;
     text-align:       left;
     background:       white;
     border:           1px  solid  rgb(215, 215, 215);
@@ -982,15 +972,17 @@ form .Row.Grid-Row > .Grid-Column:first-child {
     transition:       border-color  ease-in-out  .15s,
                       box-shadow    ease-in-out  .15s;
     border-radius:    0;
+    display:          inline-block;
     max-width:        30%;
 }
-.Tab.Monitor > ol > li:hover {
+.Tab.Monitor > label:hover {
     border-color:    rgb(14, 144, 210);
     box-shadow:      inset  0  1px  1px  rgba(0, 0, 0, 0.075),
                      0  0  8px  rgba(14, 144, 210, 0.6);
     background:      white  !important;
 }
-.Tab.Monitor > div {
+.Tab.Monitor > .Body,
+.Tab.Monitor > div,    .Tab.Monitor > section  {
     background:    white;
 }
 
