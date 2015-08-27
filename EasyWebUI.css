@@ -653,6 +653,45 @@ html.Fixed > body > .Fix-Top {
     padding:       0  1em;
 }
 
+/* ---------- Form Row ---------- */
+form .Row {
+    margin:        16px  auto;
+    max-width:     100%;
+    text-align:    left;
+    font-size:     0;
+}
+form.Flex-Box.Row {
+    margin:       auto;
+    font-size:    16px;
+}
+form .Row > * {
+    display:           inline-block;
+    vertical-align:    middle;
+    font-size:         18px;
+}
+form .Row > label[for] {
+    text-align:       center;
+    width:            28.5%;
+    max-width:        28.5%;
+    white-space:      nowrap;
+    overflow:         hidden;
+    text-overflow:    ellipsis;
+}
+form .Row > input[type="text"],    form .Row > input[type="password"],
+form .Row > input[type="email"],   form .Row > input[type="url"],
+form .Row > input[type="search"],  form .Row > input[type="tel"],
+form .Row > input[type="number"],  form .Row > input[type="range"],
+form .Row > textarea,              form .Row select   {
+    width:      68.5%;
+}
+form .Row.Grid-Row > .Grid-Column {
+    padding-left:    0.5em;
+}
+form .Row.Grid-Row > .Grid-Column:first-child {
+    padding:    0;
+}
+
+/* ---------- Navigation Bar ---------- */
 ul.NavBar {
     list-style:    none;
     margin:        0;
@@ -847,6 +886,7 @@ img.UserLogo {
     animation:            Progress-Bar_stripes  2s  linear  infinite;
 }
 
+/* ---------- Panel Control ---------- */
 .Panel {
     overflow:    hidden;
     padding:     0.5em;
@@ -862,44 +902,6 @@ img.UserLogo {
 }
 .Panel > .Body {
     padding:    0.5em;
-}
-
-/* ----- Form Row ----- */
-form .Row {
-    margin:        16px  auto;
-    max-width:     100%;
-    text-align:    left;
-    font-size:     0;
-}
-.Flex-Box.Row {
-    margin:       auto;
-    font-size:    16px;
-}
-form .Row > * {
-    display:           inline-block;
-    vertical-align:    middle;
-    font-size:         18px;
-}
-form .Row > label[for] {
-    text-align:       center;
-    width:            28.5%;
-    max-width:        28.5%;
-    white-space:      nowrap;
-    overflow:         hidden;
-    text-overflow:    ellipsis;
-}
-form .Row > input[type="text"],    form .Row > input[type="password"],
-form .Row > input[type="email"],   form .Row > input[type="url"],
-form .Row > input[type="search"],  form .Row > input[type="tel"],
-form .Row > input[type="number"],  form .Row > input[type="range"],
-form .Row > textarea,              form .Row select   {
-    width:      68.5%;
-}
-form .Row.Grid-Row > .Grid-Column {
-    padding-left:    0.5em;
-}
-form .Row.Grid-Row > .Grid-Column:first-child {
-    padding:    0;
 }
 
 /* ---------- Tab Control ---------- */
@@ -984,30 +986,6 @@ form .Row.Grid-Row > .Grid-Column:first-child {
 .Tab.Monitor > .Body,
 .Tab.Monitor > div,    .Tab.Monitor > section  {
     background:    white;
-}
-
-.Item-Box h3.Title {
-    text-align:       center;
-    background:       rgb(26, 121, 224);
-    color:            white;
-    padding:          1em;
-    font-weight:      normal;
-    border-radius:    5px;
-    min-width:        10em;
-}
-.Item-Box .Title {
-    margin:    0.5em;
-}
-.Item-Box .Logo.Icon {
-    font-size:     5em;
-    margin:        0;
-    padding:       0.1em;
-}
-.Item-Box ul.Intro {
-    list-style:    none;
-    padding:       0  3em;
-    text-align:    center;
-    color:         rgb(60, 60, 60);
 }
 
 
@@ -1120,25 +1098,32 @@ form .Row.Grid-Row > .Grid-Column:first-child {
     max-width:         100%  !important;
     height:            1em;
     max-height:        100%  !important;
+    position:          relative;
 }
 .Icon:before {
+    position:      absolute;
     font-style:    normal;
     font-size:     1.5em;
-    position:      absolute;
-    top:           0;
-    left:          20%;
 }
 .Icon.Mail:before {
     content:    '\2709';
+    top:        -30%;
+    left:       -5%;
 }
 .Icon.Heart:before {
     content:    '\2661';
+    top:        -25%;
+    left:       15%;
 }
 .Icon.Star:before {
     content:    '\2730';
+    top:        -30%;
+    left:       5%;
 }
 .Icon.Return:before {
     content:    '\21e6';
+    top:        5%;
+    left:       20%;
 }
 /* ----- Responsive Design ----- */
 @media (max-width:  540px) {
