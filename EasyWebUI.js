@@ -339,7 +339,11 @@
 
                 if (! $_This.hasClass('active'))
                     $_This.addClass('active').siblings().removeClass('active');
-            }).filter('.active').click();
+            });
+
+            $_Label.siblings('input[type="radio"]')[
+                $_Label.filter('.active').index($_Label)
+            ].checked = true;
         });
     };
 
