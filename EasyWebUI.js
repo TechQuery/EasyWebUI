@@ -322,6 +322,9 @@
                 $_Radio = $_Child.filter('input[type="radio"]').remove();
             var $_Tab = $_Child.not($_Label).not($_Radio);
 
+            if (! $_Label.filter('.active').length)
+                $_Label.eq(0).addClass('active');
+
             $_Label.each(function () {
                 var _GUID_ = $.guid();
 
