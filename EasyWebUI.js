@@ -2,7 +2,7 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v1.1  (2015-8-24)  Stable
+//      [Version]     v1.2  (2015-12-11)  Beta
 //
 //      [Based on]    iQuery v1  or  jQuery (with jQuery+)
 //
@@ -126,7 +126,7 @@
     $.fn.addClass = function () {
         _addClass_.apply(this, arguments);
 
-        if (Need_Fix && ($.inArray(arguments[0].split(' '), 'Flex-Box') > -1))
+        if (Need_Fix  &&  ($.inArray('Flex-Box', arguments[0].split(' ')) > -1))
             return  this.each(FlexFix);
 
         return this;
@@ -146,7 +146,7 @@
             iStyle = [ ];
 
         for (var i = 0;  i < iStyleSheet.length;  i++)
-            if ($.inArray(iStyleSheet[i].pseudo, 'before') > -1)
+            if ($.inArray('before', iStyleSheet[i].pseudo) > -1)
                 iStyle.push(iStyleSheet[i].style);
 
         $(this).change(function () {
@@ -173,7 +173,7 @@
 
                 //  Data-List for All Cores
                 var $_List = $('<datalist />', {
-                        id:    $.guid('Range')
+                        id:    $.uuid('Range')
                     });
 
                 $_This.attr('list', $_List[0].id);
@@ -312,41 +312,84 @@
         });
     };
 
-/* ---------- 标签页 控件  v0.3 ---------- */
+/* ---------- 标签页 控件  v0.4 ---------- */
+
+    var Tab_Type = ['Point', 'Button', 'Monitor'];
 
     $.fn.iTab = function () {
         return  this.each(function () {
-            var iName = $.guid('iTab'),
-                $_Child = $(this).children();
-            var $_Label = $_Child.filter('label'),
-                $_Radio = $_Child.filter('input[type="radio"]').remove();
-            var $_Tab = $_Child.not($_Label).not($_Radio);
+            var $_Tab_Box = $(this),  iName = $.uuid('iTab'),  iType;
 
-            if (! $_Label.filter('.active').length)
-                $_Label.eq(0).addClass('active');
+            for (var i = 0;  i < Tab_Type.length;  i++)
+                if ($_Tab_Box.hasClass( Tab_Type[i] )) {
+                    iType = Tab_Type[i];
+                    $_Tab_Box.attr('data-tab-type', iType);
+                }
 
-            $_Label.each(function () {
-                var _GUID_ = $.guid();
+            var $_Child = $_Tab_Box.children();
+            var $_Label = $_Child.filter('label');
 
-                $(this).attr('for', _GUID_);
-                var _Radio_ = $('<input type="radio" name="' + iName + '" />').attr('id', _GUID_);
-                var _Tab_ = $_Tab.eq(arguments[0]).before(_Radio_);
+            var $_LT = $_Label.eq(0),  Index = 0,
+                $_Tab_Set = $_Child.not($_Label).not(
+                    $_Child.filter('input[type="radio"]').remove()
+                );
+
+            $.ListView(this,  'div:visible',  function ($_Tab_Body) {
+
+                var $_This_Label = this.$_View.children('label').eq(Index++),
+                    _UUID_ = $.uuid();
+                if (! $_This_Label.length) {
+                    $_This_Label = $_LT.clone(true).removeClass('active');
+                    $_LT.before( $_This_Label );
+                }
+                $_This_Label.attr('for', _UUID_);
+
+                var _Radio_ = $([
+                        '<input type="radio" name=',  iName,  ' id=',  _UUID_,  ' />'
+                    ].join('"'));
+                var _Tab_ = $_Tab_Body.after(_Radio_);
 
                 if (! $.browser.modern)
                     _Radio_.change(function () {
-                        $_Tab.hide();
+                        $_Tab_Set.hide();
                         _Tab_.show();
                     });
-            }).click(function () {
-                var $_This = $(this);
 
-                if (! $_This.hasClass('active'))
-                    $_This.addClass('active').siblings().removeClass('active');
-            });
+                if (Index == 1)  $_Tab_Body.remove();
 
-            $_Label.siblings('input[type="radio"]')[
+            }).render(
+                $.map($_Tab_Set,  function () { return 1; }),
+                (iType !== 'Point')
+            );
+
+            $_Label = $_Tab_Box.children('label');
+
+            if (! $_Label.filter('.active').length)  $_LT.addClass('active');
+
+            $_Tab_Box.children('input[type="radio"]')[
                 $_Label.filter('.active').index($_Label)
             ].checked = true;
+
+        }).on('click',  'label[for]',  function () {
+            var $_This = $(this);
+
+            if (! $_This.hasClass('active'))
+                $_This.addClass('active').siblings().removeClass('active');
+
+        }).swipe(function () {
+            var $_This = $(this),  $_Target = $(arguments[0].target);
+
+            var $_Path = $_Target.parentsUntil(this),
+                $_Tab_Body = $_This.children().not('label, input');
+
+            var Index = $_Tab_Body.index(
+                    $_Path.length ? $_Path.slice(-1) : $_Target
+                );
+            if (this.dataset.tabType == 'Point')
+                Index = $_Tab_Body.length - Index - 1;
+            Index += ((arguments[1] < 0)  ?  1  :  -1);
+
+            $_This.children('label').eq(Index % $_Tab_Body.length)[0].click();
         });
     };
 
