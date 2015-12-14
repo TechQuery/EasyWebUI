@@ -2,7 +2,7 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v1.2  (2015-12-11)  Beta
+//      [Version]     v1.2  (2015-12-14)  Stable
 //
 //      [Based on]    iQuery v1  or  jQuery (with jQuery+)
 //
@@ -357,6 +357,13 @@
 
                 if (Index == 1)  $_Tab_Body.remove();
 
+            }).on('remove',  function () {
+                $([
+                    'label[for=',
+                    $(arguments[0][0].previousElementSibling).remove()[0].id,
+                    ']'
+                ].join('"')).remove();
+
             }).render(
                 $.map($_Tab_Set,  function () { return 1; }),
                 (iType !== 'Point')
@@ -376,20 +383,26 @@
             if (! $_This.hasClass('active'))
                 $_This.addClass('active').siblings().removeClass('active');
 
-        }).swipe(function () {
-            var $_This = $(this),  $_Target = $(arguments[0].target);
+        }).swipe(function (iEvent, swipeX, swipeY) {
+            if (
+                (typeof swipeX != 'number')  ||
+                (Math.abs(swipeY)  >  Math.abs(swipeX))
+            )
+                return;
+
+            var $_This = $(this),  $_Target = $(iEvent.target);
 
             var $_Path = $_Target.parentsUntil(this),
                 $_Tab_Body = $_This.children().not('label, input');
 
-            var Index = $_Tab_Body.index(
-                    $_Path.length ? $_Path.slice(-1) : $_Target
-                );
-            if (this.dataset.tabType == 'Point')
-                Index = $_Tab_Body.length - Index - 1;
-            Index += ((arguments[1] < 0)  ?  1  :  -1);
+            $_Target = $_Path.length ? $_Path.slice(-1) : $_Target;
 
-            $_This.children('label').eq(Index % $_Tab_Body.length)[0].click();
+            var Index = $_Tab_Body.index( $_Target )  +  ((swipeX < 0)  ?  1  :  -1);
+
+            $_Target = $_Tab_Body.eq(Index % $_Tab_Body.length);
+
+            $('label[for="' + $_Target[0].previousElementSibling.id + '"]')[0]
+                .click();
         });
     };
 
