@@ -2,7 +2,7 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v1.2  (2015-12-14)  Stable
+//      [Version]     v1.2  (2015-12-15)  Stable
 //
 //      [Based on]    iQuery v1  or  jQuery (with jQuery+)
 //
@@ -316,8 +316,23 @@
 
     var Tab_Type = ['Point', 'Button', 'Monitor'];
 
+    function Tab_Active() {
+        var $_Label = this.children('label');
+        var $_Active = $_Label.filter('.active');
+
+        ($_Active.length ? $_Active : $_Label)[0].click();
+    }
+
     $.fn.iTab = function () {
-        return  this.each(function () {
+        return  this.on('click',  'label[for]',  function () {
+
+            var $_This = $(this);
+
+            if (! $_This.hasClass('active'))
+                $_This.addClass('active').siblings().removeClass('active');
+
+        }).each(function () {
+
             var $_Tab_Box = $(this),  iName = $.uuid('iTab'),  iType;
 
             for (var i = 0;  i < Tab_Type.length;  i++)
@@ -364,24 +379,14 @@
                     ']'
                 ].join('"')).remove();
 
+                Tab_Active.call( this.$_View );
+
             }).render(
                 $.map($_Tab_Set,  function () { return 1; }),
                 (iType !== 'Point')
             );
 
-            $_Label = $_Tab_Box.children('label');
-
-            if (! $_Label.filter('.active').length)  $_LT.addClass('active');
-
-            $_Tab_Box.children('input[type="radio"]')[
-                $_Label.filter('.active').index($_Label)
-            ].checked = true;
-
-        }).on('click',  'label[for]',  function () {
-            var $_This = $(this);
-
-            if (! $_This.hasClass('active'))
-                $_This.addClass('active').siblings().removeClass('active');
+            Tab_Active.call( $_Tab_Box );
 
         }).swipe(function (iEvent, swipeX, swipeY) {
             if (
