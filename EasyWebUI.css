@@ -947,11 +947,11 @@ img.UserLogo {
     cursor:           pointer;
 }
 .Tab > label.active {
-    background:     white;
+    background:     white  !important;
     font-weight:    bold;
 }
 .Tab > label:hover {
-    background:    rgb(200, 200, 200);
+    background:    rgb(200, 200, 200)  !important;
 }
 .Tab > .Body,
 .Tab > div,    .Tab > section  {
@@ -1027,6 +1027,7 @@ img.UserLogo {
 .Tab.Point > label {
     border-radius:    50%;
     padding:          0.3em;
+    margin:           0  0.2em;
     position:         relative;
     z-index:          1;
 }
