@@ -123,24 +123,25 @@
     var Need_Fix,
         _addClass_ = $.fn.addClass;
 
-    $.fn.addClass = function () {
-        _addClass_.apply(this, arguments);
+    if (! ($.browser.msie < 10)) {
+        $.fn.addClass = function () {
+            _addClass_.apply(this, arguments);
 
-        if (Need_Fix  &&  ($.inArray('Flex-Box', arguments[0].split(' ')) > -1))
-            return  this.each(FlexFix);
+            if (Need_Fix  &&  ($.inArray('Flex-Box', arguments[0].split(' ')) > -1))
+                return  this.each(FlexFix);
 
-        return this;
-    };
+            return this;
+        };
 
-    $(DOM).ready(function () {
-        Need_Fix = isNaN(
-            parseInt( $('body').css(CSS_Attribute.Prefix + 'flex') )
-        );
-
-        if (Need_Fix)  $('.Flex-Box').each(FlexFix);
-    });
-
+        $(DOM).ready(function () {
+            if (isNaN(
+                parseInt( $('body').css(CSS_Attribute.Prefix + 'flex') )
+            ))
+                $('.Flex-Box').each(FlexFix);
+        });
+    }
 /* ---------- Input Range 补丁  v0.1 ---------- */
+
     function Pseudo_Bind() {
         var iStyleSheet = $.cssPseudo([arguments[0]]),
             iStyle = [ ];
@@ -335,7 +336,8 @@
 
         }).each(function () {
 
-            var $_Tab_Box = $(this),  iName = $.uuid('iTab'),  iType;
+            var $_Tab_Box = $(this),  $_Tab_Head,
+                iName = $.uuid('iTab'),  iType;
 
             for (var i = 0;  i < Tab_Type.length;  i++)
                 if ($_Tab_Box.hasClass( Tab_Type[i] )) {
@@ -357,7 +359,7 @@
                     ].join('"'));
                 var $_Tab_Body = $_Tab_Item.not($_Label).before($_Radio);
 
-                this.$_View.children('label[for]')[
+                $_Tab_Head = this.$_View.children('label[for]')[
                     Label_At ? 'prependTo' : 'appendTo'
                 ](this.$_View);
 
@@ -382,15 +384,15 @@
 
         /* ----- 自动切换模式 ----- */
 
-                var $_Label = this.$_View.children('label[for]'),
-                    Index = 0,  iPause;
+                var Index = 0,  iPause;
 
                 $.every(2,  function () {
-                    if (iPause)  return;
+                    if (iPause  ||  (! $_Tab_Box.hasClass('auto')))
+                        return;
 
-                    Index = (Index < $_Label.length)  ?  Index  :  0;
+                    Index = (Index < $_Tab_Head.length)  ?  Index  :  0;
 
-                    $_Label[Index++].click();
+                    $_Tab_Head[Index++].click();
                 });
 
                 this.$_View.hover(
@@ -398,7 +400,7 @@
                     function () { iPause = false; }
                 );
             }).render(
-                Array( $_Tab_Box.data('_LVI_').length )
+                Array( $.ListView(this).length )
             );
         }).swipe(function (iEvent) {
             if (
