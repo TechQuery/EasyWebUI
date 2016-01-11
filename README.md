@@ -19,11 +19,12 @@
  4. **控件 JS API**
    - 完全的 **jQuery 风格** —— 融入最好的 Web 前端生态圈
    - **方法参数**精简 —— 学习曲线平缓
-   - 内部实现基于**通用的面向对象接口** —— 工程开发、维护容易
+   - 内部实现基于通用的 **DOM 事件 / 面向对象 接口** —— 工程开发、维护容易
 
 
 ### 【教程】
 
+#### （〇）库文件引入
 HTML 源码基本结构示例如下 ——
 ```html
 <!DocType HTML>
@@ -36,6 +37,24 @@ HTML 源码基本结构示例如下 ——
 </head><body>
     ...
 </body></html>
+```
+#### （一）UI 组件 / jQuery 插件
+  1. DOM 遮罩层  v0.2
+  2. DOM/BOM 模态框  v0.4
+  3. 密码确认插件  v0.3
+  4. 面板控件  v0.1
+  5. 标签页 控件  v0.5
+  6. 元素禁止选中  v0.1
+
+#### （二）通用接口（开发进阶）
+  1. [**$.ListView**](http://git.oschina.net/Tech_Query/iQuery/blob/master/iQuery+.js)
+  2. **加载进度**事件
+```
+    $('#need_cover').trigger({        //  从需要 Loading 遮罩层的 DOM 元素上触发
+        type:      'loading',         //  通用事件接口类型
+        detail:    Float_Complete,    //  0~1 的浮点数，表示“加载完成度”
+        data:      "正在加载数据……"     //  等待提示语
+    });
 ```
 
 ### 协作开发
