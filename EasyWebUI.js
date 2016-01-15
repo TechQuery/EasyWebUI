@@ -4,7 +4,9 @@
 //
 //      [Version]     v1.9  (2016-01-10)  Stable
 //
-//      [Based on]    iQuery v1  or  jQuery (with jQuery+)
+//      [Based on]    iQuery v1  or  jQuery (with jQuery+),
+//
+//                    iQuery+
 //
 //      [Usage]       A jQuery Plugin Library which almost
 //                    isn't dependent on EasyWebUI.css
@@ -52,7 +54,6 @@
                 }
             }
         };
-
     function FlexFix() {
         var $_Box = $(this);
 
@@ -141,6 +142,7 @@
                 $('.Flex-Box').each(FlexFix);
         });
     }
+
 /* ---------- Input Range 补丁  v0.1 ---------- */
 
     function Pseudo_Bind() {
@@ -163,35 +165,35 @@
 
     $.fn.Range = function () {
         return  this.each(function () {
-                var $_This = $(this);
+            var $_This = $(this);
 
-                //  Fill-Lower for Gecko and WebKit
-                if (Pseudo_Bind.No_Bug && (! $_This.hasClass('Detail')))
-                    $_This.cssRule({
-                        ':before': {
-                            width:    (($_This[0].value / $_This[0].max) * 100) + '%  !important'
-                        }
-                    }, Pseudo_Bind);
+            //  Fill-Lower for WebKit
+            if (Pseudo_Bind.No_Bug && (! $_This.hasClass('Detail')))
+                $_This.cssRule({
+                    ':before': {
+                        width:    (($_This[0].value / $_This[0].max) * 100) + '%  !important'
+                    }
+                }, Pseudo_Bind);
 
-                //  Data-List for All Cores
-                var $_List = $('<datalist />', {
-                        id:    $.uuid('Range')
+            //  Data-List for All Cores
+            var $_List = $('<datalist />', {
+                    id:    $.uuid('Range')
+                });
+
+            $_This.attr('list', $_List[0].id);
+
+            if (this.min) {
+                var iSum = (this.max - this.min) / this.step;
+
+                for (var i = 0;  i < iSum;  i++)
+                    $_List.append('<option />', {
+                        value:    Number(this.min + (this.step * i))/*,
+                        text:     */
                     });
+            }
 
-                $_This.attr('list', $_List[0].id);
-
-                if (this.min) {
-                    var iSum = (this.max - this.min) / this.step;
-
-                    for (var i = 0;  i < iSum;  i++)
-                        $_List.append('<option />', {
-                            value:    Number(this.min + (this.step * i))/*,
-                            text:     */
-                        });
-                }
-
-                $_This.before($_List);
-            });
+            $_This.before($_List);
+        });
     };
 
 })(self,  self.document,  self.jQuery || self.Zepto);
@@ -317,11 +319,12 @@
         if (this.closed)  return;
 
         this.__ShadowCover__.close();
-
         this.closed = true;
 
         if (typeof this.onunload == 'function')
             this.onunload.call(this.document.body);
+
+        this.constructor.lastInstance = null;
     };
 
     $_DOM.keydown(function () {
@@ -693,14 +696,19 @@
 
     $(DOM).on('loading',  function (iEvent) {
 
+        //  $.Event 实例对象 detail 属性 Bug ——
+        //      https://www.zhihu.com/question/20174130/answer/80990463
+
         iEvent = iEvent.originalEvent;
 
         if ($(iEvent.target).parents().length > 1)  return;
 
         if ($_Load_Tips  &&  (iEvent.detail < 1))
             return  $_Load_Tips.text( iEvent.data );
-        else if (iEvent.detail >= 1)
-            return  Load_Cover.close();
+        else if (iEvent.detail >= 1) {
+            if (Load_Cover instanceof BOM.ModalWindow)  Load_Cover.close();
+            return  $_Load_Tips = Load_Cover = null;
+        }
 
         $_Load_Tips = $('<h1 />', {
             text:     iEvent.data,

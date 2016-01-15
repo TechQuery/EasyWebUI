@@ -47,9 +47,10 @@ HTML 源码基本结构示例如下 ——
   6. 元素禁止选中  v0.1
 
 #### （二）通用接口（开发进阶）
-  1. [**$.ListView**](http://git.oschina.net/Tech_Query/iQuery/blob/master/iQuery+.js)
+  1. [**$.ListView**](http://git.oschina.net/Tech_Query/iQuery/blob/master/iQuery+.js#L16)
   2. **加载进度**事件
-```
+
+```javascript
     $('#need_cover').trigger({        //  从需要 Loading 遮罩层的 DOM 元素上触发
         type:      'loading',         //  通用事件接口类型
         detail:    Float_Complete,    //  0~1 的浮点数，表示“加载完成度”
