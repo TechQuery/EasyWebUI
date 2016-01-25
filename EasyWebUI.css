@@ -96,7 +96,6 @@ code {
 /* ----- Data Table ----- */
 table {
     border-collapse:    collapse;
-    border-spacing:     0;
     margin:             0.1em  0;
     width:              100%;
 }
@@ -182,6 +181,7 @@ input[type="submit"]:hover,  input[type="submit"]:active,
 input[type="reset"]:hover,   input[type="reset"]:active  {
     background:    gray;
     opacity:       0.7;
+    filter:        Alpha(opacity=70);
     cursor:        pointer;
 }
 button > *,  a.Button > *  {
@@ -969,6 +969,9 @@ img.UserLogo {
     display:    none;
 }
 .Tab > input[type="radio"]:checked + * {
+    display:    block;
+}
+.Tab > input[type="radio"][checked] + * {
     display:    block;
 }
 
