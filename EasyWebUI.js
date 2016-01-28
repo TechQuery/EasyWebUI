@@ -2,7 +2,7 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v1.9  (2016-01-23)  Stable
+//      [Version]     v1.9  (2016-01-28)  Stable
 //
 //      [Based on]    iQuery v1  or  jQuery (with jQuery+),
 //
@@ -351,10 +351,13 @@
 
         BOM.alert("请留意本网页浏览器的“弹出窗口拦截”提示，当被禁止时请点选【允许】，然后可能需要重做之前的操作。");
         var new_Window = BOM.open(iURL, '_blank', [
-            'top=' + Top,               'left=' + Left,
-            'height=' + Size.height,    'width=' + Size.width,
-            'resizable=no,menubar=no,toolbar=no,location=no,status=no,scrollbars=no'
-        ].join(','));
+                'top=' + Top,               'left=' + Left,
+                'height=' + Size.height,    'width=' + Size.width,
+                [
+                    'resizable',  'scrollbars',
+                    'menubar',    'toolbar',     'location',  'status'
+                ].join('=no,').slice(0, -1)
+            ].join(','));
 
         BOM.new_Window_Fix.call(new_Window, function () {
             $('link[rel~="shortcut"], link[rel~="icon"], link[rel~="bookmark"]')
@@ -650,7 +653,7 @@
                     function () { iPause = false; }
                 );
             }).render(
-                Array( $.ListView(this).length )
+                Array( $.ListView.getInstance(this).length )
             );
         }).swipe(function (iEvent) {
             if (
@@ -703,9 +706,9 @@
 /* ---------- 首屏渲染 自动启用组件集 ---------- */
 (function (BOM, DOM, $) {
 
-    var $_Load_Tips, Load_Cover;
+    var $_DOM = $(DOM),  $_Load_Tips,  Load_Cover;
 
-    $(DOM).on('loading',  function (iEvent) {
+    $_DOM.on('loading',  function (iEvent) {
 
         //  $.Event 实例对象 detail 属性 Bug ——
         //      https://www.zhihu.com/question/20174130/answer/80990463
@@ -746,13 +749,11 @@
             .noSelect();
 
         $.ListView.findView(
-            $(DOM.body).addClass('Loaded')
+            $(DOM.body).addClass('Loaded'),  true
         ).each(function () {
             var iView = $.ListView.getInstance(this);
 
-            if (iView)  return;
-
-            iView = $.ListView(this);
+            if ( $(this).children('.ListView_Item').length )  return;
 
             iView.$_View.click(function (iEvent) {
                 if (iEvent.target.parentNode === this)
@@ -760,5 +761,25 @@
             });
         });
     });
+
+    if ($.browser.msie < 11)  return;
+
+    $_DOM.on(
+        [
+            'mousedown', 'mousemove', 'mouseup',
+            'click', 'dblclick', 'mousewheel',
+            'touchstart', 'touchmove', 'touchend', 'touchcancel',
+            'tap', 'press', 'swipe'
+        ].join(' '),
+        '.No_Pointer',
+        function (iEvent) {
+            if (iEvent.target !== this)  return;
+
+            var $_This = $(this).hide(),
+                $_Under = $(DOM.elementFromPoint(iEvent.pageX, iEvent.pageY));
+            $_This.show();
+            $_Under.trigger(iEvent);
+        }
+    );
 
 })(self,  self.document,  self.jQuery || self.Zepto);
