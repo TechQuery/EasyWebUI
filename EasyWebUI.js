@@ -2,7 +2,7 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v1.9  (2016-04-14)  Stable
+//      [Version]     v2.1  (2016-04-19)  Stable
 //
 //      [Based on]    iQuery v1  or  jQuery (with jQuery+),
 //
@@ -676,6 +676,74 @@
 
             $('label[for="' + $_Target[0].previousElementSibling.id + '"]')[0]
                 .click();
+        });
+    };
+
+/* ---------- 目录树  v0.2 ---------- */
+
+    function inlineEdit() {
+        $(arguments[0].target).one('blur',  function () {
+            if (this.textContent)  this.removeAttribute('contentEditable');
+        }).prop('contentEditable', true).focus();
+
+        return false;
+    }
+
+    function branchDelete() {
+        var iList = $.ListView.getInstance( this.parentNode );
+
+        iList.remove( this );
+
+        if (! iList.$_View[0].children[0])  iList.$_View.remove();
+
+        return false;
+    }
+
+    $.fn.iTree = function (Sub_Key, onInsert) {
+        return  this.each(function () {
+            var iOrgTree = $.TreeView(
+                    $.ListView(this, onInsert),
+                    Sub_Key,
+                    function () {
+                        arguments[0].$_View.parent().cssRule({
+                            ':before':    {
+                                content:    '"-"  !important'
+                            }
+                        });
+                    },
+                    function () {
+                        $(':input', this).focus();
+
+                        var iRule = Array.prototype.slice.call(
+                                BOM.getMatchedCSSRules(this, ':before'),  -1
+                            )[0];
+
+                        if (! $(iRule.parentStyleSheet.ownerNode).hasClass(
+                            'iQuery_CSS-Rule'
+                        ))
+                            return;
+
+                        iRule.style.setProperty('content', (
+                            (iRule.style.content == '"-"')  ?  '"+"'  :  '"-"'
+                        ), 'important');
+                    }
+                );
+            iOrgTree.unit.$_View
+                .on('Insert',  '.ListView_Item',  function () {
+                    var iList = $.ListView.getInstance( this.parentNode );
+                    var iSub = $.ListView.getInstance(
+                            $(this).children('.TreeNode')
+                        );
+
+                    if ( iSub )
+                        iSub.insert( arguments[1] );
+                    else
+                        iOrgTree.branch(iList, this, arguments[1]);
+
+                    return false;
+                })
+                .on('Edit', '.ListView_Item', inlineEdit)
+                .on('Delete',  '.ListView_Item', branchDelete);
         });
     };
 
