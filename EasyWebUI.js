@@ -2,7 +2,7 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v2.1  (2016-04-19)  Stable
+//      [Version]     v2.4  (2016-04-23)  Stable
 //
 //      [Based on]    iQuery v1  or  jQuery (with jQuery+),
 //
@@ -16,7 +16,7 @@
 //
 
 
-/* ---------- CSS 3 补丁 ---------- */
+/* ---------- HTML 5 / CSS 3 补丁 ---------- */
 (function (BOM, DOM, $) {
 
 /* ---------- Flex Box 补丁  v0.2 ---------- */
@@ -188,6 +188,96 @@
             }
 
             $_This.before($_List);
+        });
+    };
+
+/* ---------- Input Data-List 补丁  v0.2 ---------- */
+
+    var List_Type = 'input[type="' +
+            ['text', 'tel', 'email', 'url', 'search'].join('"], input[type="')  +
+            '"]';
+
+    function Tips_Show($_List) {
+        if (! this.value)  $_List.append( $_List.$_Option );
+
+        if (! $_List.height())  $_List.slideDown(100);
+
+        return this.value;
+    }
+
+    function Tips_Hide() {
+        if ( this.height() )  this.slideUp(100);
+
+        return this;
+    }
+
+    function Tips_Match($_List) {
+        $_List.$_Option = $.unique($.merge(
+            $_List.$_Option,  $_List.children()
+        ));
+
+        var iValue = Tips_Show.call(this, $_List);
+
+        if (! iValue)  return;
+
+        $.each($_List.$_Option,  function () {
+            for (var i = 0, _Index_;  i < iValue.length;  i++) {
+                if (iValue[i + 1]  ===  undefined)  break;
+
+                _Index_ = this.value.indexOf( iValue[i] );
+
+                if (
+                    (_Index_ < 0)  ||
+                    (_Index_  >=  this.value.indexOf( iValue[i + 1] ))
+                ) {
+                    if (this.parentElement)  $(this).detach();
+                    return;
+                }
+            }
+            if (! this.parentElement)  $_List[0].appendChild( this );
+        });
+    }
+
+    $.fn.smartInput = function () {
+        return  this.filter(List_Type).each(function () {
+
+            var $_Input = $(this),  iPosition = this.parentNode.style.position;
+
+            if (BOM.HTMLDataListElement  ||  ($_Input.attr('autocomplete') == 'off'))
+                return;
+
+            if ((! iPosition)  ||  (iPosition == 'static'))
+                $(this.parentNode).css({
+                    position:    'relative',
+                    zoom:        1
+                });
+            iPosition = $_Input.attr('autocomplete', 'off').position();
+            iPosition.top += $_Input.height();
+
+            var $_List = $(
+                    '#' + this.getAttribute('list') + ' > select[multiple]'
+                ).css($.extend(iPosition, {
+                    position:     'absolute',
+                    'z-index':    10000,
+                    height:       0,
+                    width:        $_Input.width(),
+                    padding:      0,
+                    border:       0,
+                    overflow:     'hidden',
+                    opacity:      0
+                })).change(function () {
+                    $_Input[0].value = Tips_Hide.call($_List)[0].value;
+                });
+            $_List.$_Option = [ ];
+
+            var iFilter = $.proxy(Tips_Match, null, $_List);
+
+            $_Input.after($_List)
+                .dblclick($.proxy(Tips_Show, null, $_List))
+                .blur($.proxy(Tips_Hide, $_List))
+                .keyup(iFilter)
+                .on('paste', iFilter)
+                .on('cut', iFilter);
         });
     };
 
@@ -676,6 +766,69 @@
 
             $('label[for="' + $_Target[0].previousElementSibling.id + '"]')[0]
                 .click();
+        });
+    };
+
+/* ---------- 阅读导航栏  v0.1 ---------- */
+
+    $.fn.iReadNav = function ($_Context) {
+        return  this.each(function () {
+            var iMainNav = $.TreeView(
+                    $.ListView(this,  function ($_Item, iValue) {
+
+                        $('a', $_Item[0]).text(iValue.text)[0].href =
+                            '#' + iValue.id;
+                        $_Item.attr('title', iValue.text);
+                    }),
+                    null,
+                    function () {
+                        arguments[0].$_View.attr('class', '');
+                    },
+                    function () {
+                        var iTarget = arguments[0].target;
+
+                        if (iTarget.tagName.toLowerCase() == 'a')
+                            return (
+                                '*[id="'  +  iTarget.href.split('#')[1]  +  '"]'
+                            );
+                    }
+                );
+            iMainNav.linkage($_Context,  function ($_Anchor) {
+                $_Anchor = $_Anchor.prevAll('h1, h2, h3');
+
+                if (! $.contains(this, $_Anchor[0]))  return;
+
+                $_Anchor = $(
+                    'a[href="#' + $_Anchor[0].id + '"]',  iMainNav.unit.$_View[0]
+                );
+                $('.ListView_Item.active', iMainNav.unit.$_View[0])
+                    .removeClass('active');
+
+                $.ListView.getInstance( $_Anchor.parents('.TreeNode')[0] )
+                    .focus( $_Anchor[0].parentNode );
+            });
+
+            $_Context.on('Refresh',  function () {
+
+                iMainNav.bind(
+                    $('h1, h2, h3', this),
+                    function ($_A, $_B) {
+                        return  $_B.tagName[1] - $_A.tagName[1];
+                    },
+                    function () {
+                        if (! this.id.match(/\w/))  this.id = $.uuid('Header');
+
+                        return {
+                            id:      this.id,
+                            text:    $(this).text()
+                        };
+                    }
+                );
+                return false;
+
+            }).on('Clear',  function () {
+                return  (! iMainNav.unit.clear());
+            });
         });
     };
 

@@ -44,12 +44,14 @@ HTML 源码基本结构示例如下 ——
   3. 密码确认插件  v0.3
   4. 面板控件  v0.1
   5. 标签页 控件  v0.5
-  6. 目录树 控件  v0.2
-  7. 元素禁止选中  v0.1
+  6. 阅读导航栏   v0.1
+  7. 目录树 控件  v0.2
+  8. 元素禁止选中  v0.1
 
 #### （二）通用接口（开发进阶）
   1. [**$.ListView**](http://git.oschina.net/Tech_Query/iQuery/blob/master/iQuery+.js#L16)
-  2. **加载进度**事件
+  2. [**$.TreeView**](http://git.oschina.net/Tech_Query/iQuery/blob/master/iQuery+.js#L253)
+  3. **加载进度**事件
 
 ```javascript
     $('#need_cover').trigger({        //  从需要 Loading 遮罩层的 DOM 元素上触发

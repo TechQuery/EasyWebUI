@@ -411,7 +411,7 @@ input[type="range"].Detail:focus::-ms-fill-upper  {
     background:    deepskyblue;
 }
 datalist {
-    display:    none  !important;
+    display:    none;
 }
 /* ----- iFrame ----- */
 iframe {
@@ -787,8 +787,9 @@ ul.NavBar > li:active {
 
 /* ----- DropDown Menu ----- */
 .DropDown.Head {
-    position:      relative;
+    display:       inline-block;
     min-height:    1.5em;
+    position:      relative;
 }
 .DropDown.Body {
     display:       none;
