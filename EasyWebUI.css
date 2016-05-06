@@ -1117,6 +1117,12 @@ img.UserLogo {
     left:             -2em;
     top:              0.7em;
 }
+.Tree li:hover > * {
+    background-color:    lightgray;
+}
+.Tree li:hover > ul {
+    background-color:    inherit;
+}
 
 
 /* ----------- Atom View ---------- */
@@ -1294,6 +1300,9 @@ img.UserLogo {
 }
 .Icon.Remove:before {
     content:    "-";
+}
+.Icon.Home:before {
+    content:    "\1F3E0";
 }
 .Icon.Pen:before {
     content:    "\270F";
