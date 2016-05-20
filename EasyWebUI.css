@@ -1098,6 +1098,7 @@ img.UserLogo {
 .Tree {
     margin:          0;
     padding-left:    2em;
+    outline:         none;
 }
 .Tree li {
     list-style:     none;
