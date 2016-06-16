@@ -2,7 +2,7 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v2.7  (2016-06-01)  Stable
+//      [Version]     v2.7  (2016-06-16)  Stable
 //
 //      [Based on]    iQuery v1  or  jQuery (with jQuery+),
 //
@@ -122,24 +122,20 @@
             );
     }
 
-    var Need_Fix,
-        _addClass_ = $.fn.addClass;
+    var _addClass_ = $.fn.addClass;
 
-    if (! ($.browser.msie < 10)) {
+    if (!  ('flex' in DOM.documentElement.style)) {
         $.fn.addClass = function () {
             _addClass_.apply(this, arguments);
 
-            if (Need_Fix  &&  ($.inArray('Flex-Box', arguments[0].split(' ')) > -1))
-                return  this.each(FlexFix);
+            if ($.inArray('Flex-Box', arguments[0].split(/\s+/))  >  -1)
+                return this.each(FlexFix);
 
             return this;
         };
 
         $(DOM).ready(function () {
-            if (isNaN(
-                parseInt( $('body').css(CSS_Attribute.Prefix + 'flex') )
-            ))
-                $('.Flex-Box').each(FlexFix);
+            $('.Flex-Box').each(FlexFix);
         });
     }
 
@@ -998,7 +994,7 @@
 /* ---------- 元素禁止选中  v0.1 ---------- */
 
     $.fn.noSelect = function () {
-        return  this.attr('unSelectable', 'on').addClass('.No_Select')
+        return  this.attr('unSelectable', 'on').addClass('No_Select')
                 .bind('selectStart', false).bind('contextmenu', false);
     };
 
