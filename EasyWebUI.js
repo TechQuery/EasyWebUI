@@ -2,7 +2,7 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v2.7  (2016-06-16)  Stable
+//      [Version]     v2.8  (2016-07-04)  Stable
 //
 //      [Based on]    iQuery v1  or  jQuery (with jQuery+),
 //
@@ -335,7 +335,7 @@
         }),
         _Instance_ = [ ];
 
-    function ShadowCover($_Container, iContent, CSS_Rule) {
+    function Shade($_Container, iContent, CSS_Rule) {
         var _This_ = this;
 
         this.$_Cover = $('<div class="ShadowCover"><div /></div>');
@@ -351,19 +351,19 @@
         _Instance_.push(this);
     }
 
-    ShadowCover.prototype.close = function () {
+    Shade.prototype.close = function () {
         this.$_Cover.remove();
         if (this.$_Style)  this.$_Style.remove();
 
         _Instance_.splice(_Instance_.indexOf(this), 1);
     };
 
-    ShadowCover.clear = function () {
+    Shade.clear = function () {
         for (var i = _Instance_.length - 1;  i > -1;  i--)
             _Instance_[i].close();
     };
 
-    $.fn.shadowCover = function () {
+    $.fn.shade = function () {
         var iArgs = $.makeArray(arguments).reverse();
 
         var More_Logic = (typeof iArgs[0] == 'function')  &&  iArgs.shift();
@@ -371,14 +371,14 @@
         var iContent = iArgs[0];
 
         for (var i = 0, iCover;  i < this.length;  i++) {
-            iCover = new ShadowCover($(this[i]), iContent, CSS_Rule);
+            iCover = new Shade($(this[i]), iContent, CSS_Rule);
 
             if (More_Logic)  More_Logic.call(this[i], iCover);
         }
         return this;
     };
 
-    $.shadowCover = ShadowCover;
+    $.shade = Shade;
 
 
 /* ---------- DOM/BOM 模态框  v0.4 ---------- */
@@ -398,8 +398,8 @@
 
         var _This_ = this;
 
-        $('body').shadowCover(this.locked ? null : iContent,  iStyle,  function () {
-            _This_.__ShadowCover__ = arguments[0];
+        $('body').shade(this.locked ? null : iContent,  iStyle,  function () {
+            _This_.__Shade__ = arguments[0];
 
             _This_.document.body = arguments[0].$_Cover.click(function () {
                 if (! _This_.locked) {
@@ -428,7 +428,7 @@
     BOM.ModalWindow.prototype.close = function () {
         if (this.closed)  return;
 
-        this.__ShadowCover__.close();
+        this.__Shade__.close();
         this.closed = true;
 
         if (typeof this.onunload == 'function')
@@ -665,6 +665,32 @@
         });
     };
 
+/* ---------- 滚动悬停  v0.1 ---------- */
+
+    var Fixed_List = [ ];
+
+    $_DOM.scroll(function () {
+        for (var i = 0, $_Fixed;  Fixed_List[i];  i++) {
+            $_Fixed = $( Fixed_List[i] );
+
+            if (
+                (! $_Fixed.inViewport())  &&
+                ($_Fixed.css('position') != 'fixed')
+            )
+                $_Fixed.css({
+                    position:     'fixed',
+                    top:          0,
+                    'z-index':    100
+                });
+        }
+    });
+
+    $.fn.scrollFixed = function () {
+        $.merge(Fixed_List, this);
+
+        return this;
+    };
+
 /* ---------- 数据表 控件  v0.1 ---------- */
 
     var Sort_Class = {
@@ -730,8 +756,7 @@
 
         }).each(function () {
 
-            var $_Tab_Box = $(this),  $_Tab_Head,
-                iName = $.uuid('iTab'),  iType;
+            var $_Tab_Box = $(this),  iName = $.uuid('iTab'),  iType;
 
             for (var i = 0;  i < Tab_Type.length;  i++)
                 if ($_Tab_Box.hasClass( Tab_Type[i] )) {
@@ -744,21 +769,13 @@
                 iSelector = ['input[type="radio"]',  'div, section, .Body'];
             iSelector[Label_At ? 'unshift' : 'push']('label');
 
-            $.ListView(this,  iSelector,  function ($_Tab_Item) {
+            $.ListView(this,  iSelector,  true,  function ($_Tab_Item) {
                 var _UUID_ = $.uuid();
 
                 var $_Label = $_Tab_Item.filter('label').attr('for', _UUID_),
                     $_Radio = $([
                         '<input type="radio" name=',  iName,  ' id=',  _UUID_,  ' />'
                     ].join('"'));
-                var $_Tab_Body = $_Tab_Item.not($_Label).before($_Radio);
-
-                $_Tab_Head = $($.map(
-                    this.$_View.children('input[type="radio"]'),
-                    function () {
-                        return  $('label[for="' + arguments[0].id + '"]')[0];
-                    }
-                ))[Label_At ? 'prependTo' : 'appendTo']( this.$_View );
 
                 if (! $.browser.modern)
                     $_Radio.change(function () {
@@ -767,6 +784,9 @@
                         else
                             this.removeAttribute('checked');
                     });
+
+                return  [$_Label[0], $_Radio[0], $_Tab_Item.not($_Label)[0]];
+
             }).on('remove',  function () {
 
                 var $_Label = arguments[0].filter('label');
@@ -776,6 +796,13 @@
                 Tab_Active.call(this.$_View, $_Label);
 
             }).on('afterRender',  function () {
+
+                var $_Tab_Head = $($.map(
+                        this.$_View.children('input[type="radio"]'),
+                        function () {
+                            return  $('label[for="' + arguments[0].id + '"]')[0];
+                        }
+                    ))[Label_At ? 'prependTo' : 'appendTo']( this.$_View );
 
                 Tab_Active.call( this.$_View );
 
@@ -1047,9 +1074,7 @@
         $('*:button,  a.Button,  .No_Select,  .Panel > .Head,  .Tab > label')
             .noSelect();
 
-        $.ListView.findView(
-            $(DOM.body).addClass('Loaded'),  true
-        ).each(function () {
+        $.ListView.findView(this.body, true).each(function () {
             var iView = $.ListView.getInstance(this);
 
             if ( $(this).children('.ListView_Item').length )  return;
