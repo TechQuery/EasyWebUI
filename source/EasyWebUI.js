@@ -2,7 +2,7 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v3.0  (2016-07-22)  Stable
+//      [Version]     v3.1  (2016-07-27)  Stable
 //
 //      [Based on]    iQuery v1  or  jQuery (with jQuery+),
 //
@@ -17,7 +17,14 @@
 
 /* ---------- 首屏渲染 自动启用组件集 ---------- */
 
-define(['jquery', 'Component'],  function ($) {
+define([
+    'jquery',
+    'HTML-5_Patch/FlexBox',      'HTML-5_Patch/Input-Range', 'HTML-5_Patch/DataList',
+    'Utility/jQuery.pwConfirm',  'Component/jQuery.iTable',
+    'Component/jQuery.iPanel',   'Component/jQuery.iTab',
+    'Component/jQuery.iReadNav', 'Component/jQuery.iTree',
+    'Utility/jQuery.scrollFix',  'Modal-Dialog',             'NoSelect'
+],  function ($) {
 
     var BOM = self,  DOM = self.document;
 
