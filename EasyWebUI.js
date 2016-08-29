@@ -3,7 +3,7 @@
     if ((typeof this.define != 'function')  ||  (! this.define.amd))
         arguments[0]();
     else
-        this.define('EasyWebUI', arguments[0]);
+        this.define('EasyWebUI', ['iQuery+'], arguments[0]);
 
 })(function () {
 
@@ -626,7 +626,7 @@
             }).render(
                 Array( $.ListView.getInstance(this).length )
             );
-        }).swipe(function (iEvent) {
+        }).on('swipe',  function (iEvent) {
             if (
                 (typeof iEvent.deltaX != 'number')  ||
                 (Math.abs(iEvent.deltaY)  >  Math.abs(iEvent.deltaX))
@@ -868,26 +868,51 @@
 
 /* ---------- 滚动悬停  v0.1 ---------- */
 
-    var Fixed_List = [ ];
+    var $_DOM = $(DOM),  Fixed_List = [ ];
 
-    $(DOM).scroll(function () {
-        for (var i = 0, $_Fixed;  Fixed_List[i];  i++) {
-            $_Fixed = $( Fixed_List[i] );
+    $_DOM.scroll(function () {
+        var iOffset = $_DOM.scrollTop();
 
-            if (
-                (! $_Fixed.inViewport())  &&
-                ($_Fixed.css('position') != 'fixed')
-            )
-                $_Fixed.css({
+        for (var i = 0, $_Fixed, $_Shim;  Fixed_List[i];  i++) {
+            $_Fixed = $( Fixed_List[i].element );
+
+            if (iOffset < Fixed_List[i].offset.top) {
+
+                if ($_Fixed.css('position') == 'static')  continue;
+
+                $_Fixed.css('position', 'static');
+
+                Fixed_List[i].callback.call($_Fixed[0], 'static', iOffset);
+
+                $_Shim = $( $_Fixed[0].nextElementSibling );
+
+                if (
+                    $_Shim.attr('style', '')[0].outerHTML ==
+                    $_Fixed.clone(true).attr('style', '')[0].outerHTML
+                )
+                    $_Shim.remove();
+
+            } else if ($_Fixed.css('position') != 'fixed') {
+                $_Fixed.after( $_Fixed[0].outerHTML ).css({
                     position:     'fixed',
                     top:          0,
                     'z-index':    100
                 });
+
+                Fixed_List[i].callback.call($_Fixed[0], 'fixed', iOffset);
+            }
         }
     });
 
-    $.fn.scrollFixed = function () {
-        $.merge(Fixed_List, this);
+    $.fn.scrollFixed = function (iCallback) {
+
+        $.merge(Fixed_List,  $.map(this,  function (iDOM) {
+            return {
+                element:     iDOM,
+                offset:      $(iDOM).offset(),
+                callback:    iCallback
+            };
+        }));
 
         return this;
     };
@@ -1218,7 +1243,7 @@
             .noSelect();
 
         $.ListView.findView(this.body, true).each(function () {
-            var iView = $.ListView.getInstance(this);
+            var iView = $.ListView.instanceOf(this);
 
             if ( $(this).children('.ListView_Item').length )  return;
 

@@ -101,7 +101,7 @@ define(['jquery', 'jQuery+', 'iQuery+'],  function ($) {
             }).render(
                 Array( $.ListView.getInstance(this).length )
             );
-        }).swipe(function (iEvent) {
+        }).on('swipe',  function (iEvent) {
             if (
                 (typeof iEvent.deltaX != 'number')  ||
                 (Math.abs(iEvent.deltaY)  >  Math.abs(iEvent.deltaX))

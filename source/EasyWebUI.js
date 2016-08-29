@@ -2,7 +2,7 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v3.1  (2016-07-27)  Stable
+//      [Version]     v3.1  (2016-08-29)  Stable
 //
 //      [Based on]    iQuery v1  or  jQuery (with jQuery+),
 //
@@ -71,7 +71,7 @@ define([
             .noSelect();
 
         $.ListView.findView(this.body, true).each(function () {
-            var iView = $.ListView.getInstance(this);
+            var iView = $.ListView.instanceOf(this);
 
             if ( $(this).children('.ListView_Item').length )  return;
 
