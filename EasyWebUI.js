@@ -567,7 +567,7 @@
                 iSelector = ['input[type="radio"]',  'div, section, .Body'];
             iSelector[Label_At ? 'unshift' : 'push']('label');
 
-            $.ListView(this,  iSelector,  false,  function ($_Tab_Item) {
+            $.ListView(this, iSelector, false).on('insert',  function ($_Tab_Item) {
                 var _UUID_ = $.uuid();
 
                 var $_Label = $_Tab_Item.filter('label').attr('for', _UUID_),
@@ -624,7 +624,7 @@
                     function () { iPause = false; }
                 );
             }).render(
-                Array( $.ListView.getInstance(this).length )
+                Array( $.ListView.instanceOf(this, false).length )
             );
         }).on('swipe',  function (iEvent) {
             if (
@@ -731,8 +731,7 @@
                 $('.ListView_Item.active', iMainNav.$_View[0])
                     .removeClass('active');
 
-                $.ListView.getInstance( $_Anchor.parents('.TreeNode')[0] )
-                    .focus( $_Anchor[0].parentNode );
+                $.ListView.instanceOf( $_Anchor ).focus( $_Anchor[0].parentNode );
 
             }).on('Refresh',  function () {
 
@@ -796,7 +795,7 @@
 /* ---------- 目录树  v0.2 ---------- */
 
     function branchDelete() {
-        var iList = $.ListView.getInstance( this.parentNode );
+        var iList = $.ListView.instanceOf( this );
 
         iList.remove( this );
 
@@ -841,8 +840,8 @@
 
             iOrgTree.$_View.on('Insert',  '.ListView_Item',  function () {
 
-                var iSub = $.ListView.getInstance(
-                        $(this).children('.TreeNode')
+                var iSub = $.ListView.instanceOf(
+                        $(this).children('.TreeNode'), false
                     );
 
                 if ( iSub )
@@ -887,8 +886,8 @@
                 $_Shim = $( $_Fixed[0].nextElementSibling );
 
                 if (
-                    $_Shim.attr('style', '')[0].outerHTML ==
-                    $_Fixed.clone(true).attr('style', '')[0].outerHTML
+                    $_Shim.removeAttr('style')[0].outerHTML ==
+                    $_Fixed.clone(true).removeAttr('style')[0].outerHTML
                 )
                     $_Shim.remove();
 
@@ -1182,7 +1181,7 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v3.1  (2016-07-27)  Stable
+//      [Version]     v3.1  (2016-08-29)  Stable
 //
 //      [Based on]    iQuery v1  or  jQuery (with jQuery+),
 //

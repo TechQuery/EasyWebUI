@@ -7,7 +7,7 @@ define([
 /* ---------- 目录树  v0.2 ---------- */
 
     function branchDelete() {
-        var iList = $.ListView.getInstance( this.parentNode );
+        var iList = $.ListView.instanceOf( this );
 
         iList.remove( this );
 
@@ -52,8 +52,8 @@ define([
 
             iOrgTree.$_View.on('Insert',  '.ListView_Item',  function () {
 
-                var iSub = $.ListView.getInstance(
-                        $(this).children('.TreeNode')
+                var iSub = $.ListView.instanceOf(
+                        $(this).children('.TreeNode'), false
                     );
 
                 if ( iSub )

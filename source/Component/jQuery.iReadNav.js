@@ -70,8 +70,7 @@ define(['jquery', 'jQuery+', 'iQuery+'],  function ($) {
                 $('.ListView_Item.active', iMainNav.$_View[0])
                     .removeClass('active');
 
-                $.ListView.getInstance( $_Anchor.parents('.TreeNode')[0] )
-                    .focus( $_Anchor[0].parentNode );
+                $.ListView.instanceOf( $_Anchor ).focus( $_Anchor[0].parentNode );
 
             }).on('Refresh',  function () {
 
