@@ -22,32 +22,20 @@ define([
                     $.ListView(this, false, onInsert),
                     Sub_Key,
                     2,
-                    function (iFork, iDepth, iData) {
-                        iFork.$_View.parent().cssRule({
-                            ':before':    {content:  (
-                                '"'  +  (iData ? '-' : '+')  +  '"  !important'
-                            )}
-                        });
+                    function (iFork, _, iData) {
+                        iFork.$_View.parent().addClass(iData ? 'opened' : 'closed');
                     }
                 ).on('focus',  function (iEvent) {
-                    var _This_ = iEvent.currentTarget;
+                    var $_This = $( iEvent.currentTarget );
 
-                    $(':input', _This_).focus();
+                    $_This.find(':input').focus();
 
-                    var iRule = Array.prototype.slice.call(
-                            BOM.getMatchedCSSRules(_This_, ':before'),  -1
-                        )[0];
+                    if (! iEvent.isPseudo())  return;
 
-                    if (! (
-                        iEvent.isPseudo() &&
-                        $(iRule.parentStyleSheet.ownerNode)
-                            .hasClass('iQuery_CSS-Rule')
-                    ))
-                        return;
-
-                    iRule.style.setProperty('content', (
-                        (iRule.style.content[1] == '-')  ?  '"+"'  :  '"-"'
-                    ), 'important');
+                    if ( $_This.hasClass('opened') )
+                        $_This.removeClass('opened').addClass('closed');
+                    else
+                        $_This.removeClass('closed').addClass('opened');
                 });
 
             iOrgTree.$_View.on('Insert',  '.ListView_Item',  function () {

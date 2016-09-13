@@ -2,7 +2,7 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v3.1  (2016-08-29)  Stable
+//      [Version]     v3.1  (2016-09-13)  Stable
 //
 //      [Based on]    iQuery v1  or  jQuery (with jQuery+),
 //
