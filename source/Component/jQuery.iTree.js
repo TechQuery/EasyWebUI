@@ -21,7 +21,7 @@ define([
             var iOrgTree = $.TreeView(
                     $.ListView(this, false, onInsert),
                     Sub_Key,
-                    2,
+                    1,
                     function (iFork, _, iData) {
                         iFork.$_View.parent().addClass(iData ? 'opened' : 'closed');
                     }
