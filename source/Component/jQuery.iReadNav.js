@@ -51,18 +51,22 @@ define(['jquery', 'jQuery+', 'iQuery+'],  function ($) {
                 }),
                 _DOM_ = $_Context[0].ownerDocument;
 
-            $_Context.scroll(function () {
-                if (arguments[0].target !== this)  return;
+            ($_Context.is(':scrollable') ?
+                $_Context  :  $_Context.scrollParents().eq(0)
+            ).scroll(function () {
+                if ($.contains($_Context[0], arguments[0].target))  return;
 
                 var iAnchor = $_Context.offset(),
-                    iFontSize = $(_DOM_.body).css('font-size') / 2;
+                    iFontSize = parseFloat($(_DOM_.body).css('font-size')) / 2;
 
                 var $_Anchor = $(_DOM_.elementFromPoint(
-                        iAnchor.left + $_Context.css('padding-left') + iFontSize,
-                        iAnchor.top + $_Context.css('padding-top') + iFontSize
+                        iAnchor.left + iFontSize +
+                            parseFloat( $_Context.css('padding-left') ),
+                        iAnchor.top + iFontSize +
+                            parseFloat( $_Context.css('padding-top') )
                     )).prevAll('h1, h2, h3');
 
-                if (! $.contains(this, $_Anchor[0]))  return;
+                if (! $.contains($_Context[0], $_Anchor[0]))  return;
 
                 $_Anchor = $(
                     'a[href="#' + $_Anchor[0].id + '"]',  iMainNav.$_View[0]
@@ -71,11 +75,12 @@ define(['jquery', 'jQuery+', 'iQuery+'],  function ($) {
                     .removeClass('active');
 
                 $.ListView.instanceOf( $_Anchor ).focus( $_Anchor[0].parentNode );
+            });
 
-            }).on('Refresh',  function () {
+            iMainNav.$_View.on('Refresh',  function () {
 
                 iMainNav.clear().render(
-                    toTreeData.call( $('h1, h2, h3', this) )
+                    toTreeData.call( $_Context.find('h1, h2, h3') )
                 );
                 return false;
 
