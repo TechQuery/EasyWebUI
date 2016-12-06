@@ -139,7 +139,7 @@
 /* ---------- Input Range 补丁  v0.1 ---------- */
 
     function Pseudo_Bind() {
-        var iRule = BOM.getMatchedCSSRules(arguments[0], ':before');
+        var iRule = BOM.getMatchedCSSRules(this, ':before');
 
         $(this).change(function () {
             var iPercent = ((this.value / this.max) * 100) + '%';
