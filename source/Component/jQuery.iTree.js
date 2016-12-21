@@ -19,7 +19,7 @@ define([
     $.fn.iTree = function (Sub_Key, onInsert) {
         return  this.each(function () {
             var iOrgTree = $.TreeView(
-                    $.ListView(this, false, onInsert),
+                    $.ListView(this, onInsert),
                     Sub_Key,
                     1,
                     function (iFork, _, iData) {

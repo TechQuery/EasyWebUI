@@ -42,7 +42,7 @@ define(['jquery', 'jQuery+', 'iQuery+'],  function ($) {
                 iSelector = ['input[type="radio"]',  'div, section, .Body'];
             iSelector[Label_At ? 'unshift' : 'push']('label');
 
-            $.ListView(this, iSelector, false).on('insert',  function ($_Tab_Item) {
+            $.ListView(this, iSelector).on('insert',  function ($_Tab_Item) {
                 var _UUID_ = $.uuid();
 
                 var $_Label = $_Tab_Item.filter('label').attr('for', _UUID_),

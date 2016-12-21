@@ -32,7 +32,7 @@ define(['jquery', 'jQuery+', 'iQuery+'],  function ($) {
     $.fn.iReadNav = function ($_Context) {
         return  this.each(function () {
             var iMainNav = $.TreeView(
-                    $.ListView(this,  false,  function ($_Item, iValue) {
+                    $.ListView(this,  function ($_Item, iValue) {
 
                         $('a', $_Item[0]).text(iValue.text)[0].href =
                             '#' + iValue.id;

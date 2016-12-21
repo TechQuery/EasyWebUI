@@ -439,7 +439,7 @@
 })(self,  self.document,  self.jQuery || self.Zepto);
 
 
-/* ---------- 数据表 控件  v0.2 ---------- */
+/* ---------- 数据表 控件  v0.1 ---------- */
 
 
 (function (BOM, DOM, $) {
@@ -450,75 +450,33 @@
             'SortDown':    'SortUp'
         };
 
-    function Data_Page(iSum, iUnit) {
-        if (iSum > -1)
-            return  $.map(Array(Math.ceil(iSum / iUnit)),  function () {
-                return  {index:  arguments[1] + 1};
-            });
-    }
+    $.fn.iTable = function () {
+        return  this.each(function () {
 
-    $.fn.iTable = function (DataURL) {
-        if (! this[0])  return this;
+            var iLV = $.ListView( $('tbody', this) );
 
-        var iLV = $.ListView( $('tbody', this[0]) );
+            $('thead tr', this).on('click',  'th',  function () {
+                var $_This = $(this);
 
-        $('th', this[0]).click(function () {
-            var $_This = $(this);
+                var iClass = ($_This.attr('class') || '').match(
+                        /\s?(Sort(Up|Down))\s?/
+                    );
+                iClass = iClass ? iClass[1] : '';
 
-            var iClass = ($_This.attr('class') || '').match(
-                    /\s?(Sort(Up|Down))\s?/
-                );
-            iClass = iClass ? iClass[1] : '';
+                $_This.removeClass(iClass).addClass( Sort_Class[iClass] );
 
-            $_This.removeClass(iClass).addClass( Sort_Class[iClass] );
+                var iNO = (Sort_Class[iClass] == 'SortUp')  ?  0.5  :  -0.5,
+                    Index = $_This.index();
 
-            var iNO = (Sort_Class[iClass] == 'SortUp')  ?  0.5  :  -0.5,
-                Index = $_This.index();
+                iLV.sort(function () {
+                    var A = $( arguments[2.5 - iNO][0].children[Index] ).text(),
+                        B = $( arguments[2.5 + iNO][0].children[Index] ).text();
 
-            iLV.sort(function () {
-                var A = $( arguments[2.5 - iNO][0].children[Index] ).text(),
-                    B = $( arguments[2.5 + iNO][0].children[Index] ).text();
-
-                return  isNaN(parseFloat( A ))  ?
-                    A.localeCompare( B )  :  (parseFloat(A) - parseFloat(B));
+                    return  isNaN(parseFloat( A ))  ?
+                        A.localeCompare( B )  :  (parseFloat(A) - parseFloat(B));
+                });
             });
         });
-
-        if (typeof DataURL != 'string')  return this.eq(0);
-
-        var $_tFoot = $('tfoot', this[0]);
-        $_tFoot = $_tFoot[0]  ?  $_tFoot  :  $('<tfoot />').appendTo( this[0] );
-
-        $('<tr><td><ol><li></li></ol></td></tr>').appendTo( $_tFoot )
-            .children('td').attr(
-                'colspan',  $('tbody > tr', this[0])[0].children.length
-            );
-
-        var iPage = $.ListView($('ol', $_tFoot[0])[0],  false,  function () {
-                arguments[0].text( ++arguments[2] );
-            });
-
-        iPage.$_View.on('click',  'li',  function () {
-            var Index = $(this).index() + 1;
-
-            $.getJSON(
-                DataURL.replace(/^([^\?]+\??)(.*)/,  function () {
-                    return  arguments[1] + 'page=' + Index + (
-                        arguments[2]  ?  ('&' + arguments[2])  :  ''
-                    );
-                }),
-                function (iData) {
-                    iLV.clear().render(iData.tngou);
-
-                    iPage.clear().render(
-                        Data_Page(iData.total, 10)
-                    );
-                }
-            );
-        });
-        iPage[0].click();
-
-        return this.eq(0);
     };
 
 })(self,  self.document,  self.jQuery || self.Zepto);
@@ -605,7 +563,7 @@
                 iSelector = ['input[type="radio"]',  'div, section, .Body'];
             iSelector[Label_At ? 'unshift' : 'push']('label');
 
-            $.ListView(this, iSelector, false).on('insert',  function ($_Tab_Item) {
+            $.ListView(this, iSelector).on('insert',  function ($_Tab_Item) {
                 var _UUID_ = $.uuid();
 
                 var $_Label = $_Tab_Item.filter('label').attr('for', _UUID_),
@@ -731,7 +689,7 @@
     $.fn.iReadNav = function ($_Context) {
         return  this.each(function () {
             var iMainNav = $.TreeView(
-                    $.ListView(this,  false,  function ($_Item, iValue) {
+                    $.ListView(this,  function ($_Item, iValue) {
 
                         $('a', $_Item[0]).text(iValue.text)[0].href =
                             '#' + iValue.id;
@@ -850,7 +808,7 @@
     $.fn.iTree = function (Sub_Key, onInsert) {
         return  this.each(function () {
             var iOrgTree = $.TreeView(
-                    $.ListView(this, false, onInsert),
+                    $.ListView(this, onInsert),
                     Sub_Key,
                     1,
                     function (iFork, _, iData) {
@@ -1251,7 +1209,7 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v3.3  (2016-10-07)  Stable
+//      [Version]     v3.2  (2016-12-21)  Stable
 //
 //      [Based on]    iQuery v1  or  jQuery (with jQuery+),
 //
