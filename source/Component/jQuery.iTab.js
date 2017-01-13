@@ -27,6 +27,10 @@ define(['jquery', 'jQuery+', 'iQuery+'],  function ($) {
             if (! $_This.hasClass('active'))
                 $_This.addClass('active').siblings().removeClass('active');
 
+        }).on('change',  '[type="radio"][name^="iTab"]',  function () {
+
+            arguments[0].stopPropagation();
+
         }).each(function () {
 
             var $_Tab_Box = $(this),  iName = $.uuid('iTab'),  iType;
