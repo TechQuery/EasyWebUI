@@ -2,7 +2,7 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v3.3  (2017-01-13)  Stable
+//      [Version]     v2.7  (2017-01-16)  Stable
 //
 //      [Based on]    iQuery v1  or  jQuery (with jQuery+),
 //
@@ -24,41 +24,14 @@ define([
     'Component/jQuery.iTable',   'Component/jQuery.formDialog',
     'Component/jQuery.iPanel',   'Component/jQuery.iTab',
     'Component/jQuery.iReadNav', 'Component/jQuery.iTree',
-    'Utility/jQuery.scrollFix',  'Modal-Dialog',             'NoSelect'
+    'Utility/jQuery.scrollFix',  'NoSelect'
 ],  function ($) {
 
     var BOM = self,  DOM = self.document;
 
-    var $_DOM = $(DOM),  $_Load_Tips,  Load_Cover;
+    var $_DOM = $(DOM);
 
-    $_DOM.on('loading',  function (iEvent) {
-
-        //  $.Event 实例对象 detail 属性 Bug ——
-        //      https://www.zhihu.com/question/20174130/answer/80990463
-
-        iEvent = iEvent.originalEvent;
-
-        if ($(iEvent.target).parents().length > 1)  return;
-
-        if ($_Load_Tips  &&  (iEvent.detail < 1))
-            return  $_Load_Tips.text( iEvent.data );
-        else if (iEvent.detail >= 1) {
-            if (Load_Cover instanceof BOM.ModalWindow)  Load_Cover.close();
-            return  $_Load_Tips = Load_Cover = null;
-        }
-
-        $_Load_Tips = $('<h1 />', {
-            text:    iEvent.data,
-            css:     {color:  'white'}
-        });
-
-        try {
-            Load_Cover = BOM.showModalDialog($_Load_Tips, {
-                ' ':    {background:  'darkgray'}
-            });
-        } catch (iError) { }
-
-    }).ready(function () {
+    $_DOM.ready(function () {
 
         $('form').pwConfirm();
 
