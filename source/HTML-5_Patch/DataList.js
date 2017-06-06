@@ -1,4 +1,4 @@
-define(['jquery', 'jQuery+'],  function ($) {
+define(['jquery', 'jQueryKit'],  function ($) {
 
     var BOM = self,  DOM = self.document;
 

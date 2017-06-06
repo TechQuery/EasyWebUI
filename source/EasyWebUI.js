@@ -2,11 +2,9 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v2.7  (2017-01-16)  Stable
+//      [Version]     v1.6  (2017-06-06)  Stable
 //
-//      [Based on]    iQuery v1  or  jQuery (with jQuery+),
-//
-//                    iQuery+
+//      [Based on]    iQuery v2  or  jQuery (with jQueryKit)
 //
 //      [Usage]       A jQuery Plugin Library which almost
 //                    isn't dependent on EasyWebUI.css
@@ -19,12 +17,10 @@
 
 define([
     'jquery',
-    'HTML-5_Patch/FlexBox',      'HTML-5_Patch/Input-Range', 'HTML-5_Patch/DataList',
-    'Utility/jQuery.pwConfirm',  'Utility/jQuery.checkAll',
-    'Component/jQuery.iTable',   'Component/jQuery.formDialog',
-    'Component/jQuery.iPanel',   'Component/jQuery.iTab',
-    'Component/jQuery.iReadNav', 'Component/jQuery.iTree',
-    'Utility/jQuery.scrollFix',  'NoSelect'
+    'HTML-5_Patch/FlexBox',        'HTML-5_Patch/Input-Range', 'HTML-5_Patch/DataList',
+    'Utility/jQuery.pwConfirm',    'Utility/jQuery.checkAll',
+    'Component/jQuery.formDialog', 'Component/jQuery.iPanel',
+    'Utility/jQuery.scrollFix',    'NoSelect'
 ],  function ($) {
 
     var BOM = self,  DOM = self.document;

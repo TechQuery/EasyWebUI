@@ -3,8 +3,7 @@
     baseUrl:         '../source',
     paths:           {
         jquery:       'http://cdn.bootcss.com/jquery/1.12.4/jquery',
-        'jQuery+':    'http://tech_query.oschina.io/iquery/jQuery+',
-        'iQuery+':    'http://tech_query.oschina.io/iquery/iQuery+'
+        jQueryKit:    'http://tech_query.oschina.io/iquery/jQueryKit'
     },
     out:             '../EasyWebUI.js',
     onBuildWrite:    function () {

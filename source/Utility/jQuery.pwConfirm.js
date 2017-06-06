@@ -1,4 +1,4 @@
-define(['jquery', 'jQuery+'],  function ($) {
+define(['jquery', 'jQueryKit'],  function ($) {
 
 /* ---------- 密码确认插件  v0.3 ---------- */
 
