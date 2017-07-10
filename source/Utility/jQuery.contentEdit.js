@@ -1,35 +1,33 @@
-define(['jquery'],  function ($) {
+define(['jquery', 'jQueryKit'],  function ($) {
 
 /* ---------- 普通元素内容编辑  v0.1 ---------- */
 
     function StopBubble() {
+
         arguments[0].stopPropagation();
     }
 
     $.fn.contentEdit = function () {
-        return  this.one('blur',  function () {
 
-            var $_This = $(this);
+        return  this.one('blur',  function () {
 
             this.removeAttribute('contentEditable');
 
-            $_This.off('click', StopBubble).off(
-                'input propertychange paste keyup'
-            );
-            this.value = $.trim( $_This.text() );
+            $( this ).off('click', StopBubble).off('input');
+
+            this.value = this.textContent.trim();
 
             if (! this.value)
-                $_This.text(this.value = this.defaultValue);
+                this.textContent = this.value = this.defaultValue;
 
-        }).input(function () {
+        }).on('input',  function () {
 
-            var $_This = $(this);
-
-            return  ($.trim( $_This.text() ).length  <=  $_This.attr('maxlength'));
-
+            return (
+                this.textContent.trim().length  <=  this.getAttribute('maxlength')
+            );
         }).on('click', StopBubble).prop('defaultValue',  function () {
 
-            return  $.trim( $(this).text() );
+            return this.textContent.trim();
 
         }).prop('contentEditable', true).focus();
     };

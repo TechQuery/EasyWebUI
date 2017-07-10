@@ -2,9 +2,9 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v1.6  (2017-06-06)  Stable
+//      [Version]     v1.6  (2017-07-10)  Stable
 //
-//      [Based on]    iQuery v2  or  jQuery (with jQueryKit)
+//      [Based on]    iQuery v3  or  jQuery (with jQueryKit)
 //
 //      [Usage]       A jQuery Plugin Library which almost
 //                    isn't dependent on EasyWebUI.css
@@ -23,34 +23,17 @@ define([
     'Utility/jQuery.scrollFix',    'NoSelect'
 ],  function ($) {
 
-    var BOM = self,  DOM = self.document;
+    var $_DOM = $( document ).ready(function () {
 
-    var $_DOM = $(DOM);
+            $('form').pwConfirm();
 
-    $_DOM.ready(function () {
+            $('form input[type="range"]').Range();
 
-        $('form').pwConfirm();
+            $('.Panel').iPanel();
 
-        $('form input[type="range"]').Range();
-
-        $('.Panel').iPanel();
-
-        $('.Tab').iTab();
-
-        $('*:button,  a.Button,  .No_Select,  .Panel > .Head,  .Tab > label')
-            .noSelect();
-
-        $.ListView.findView(this.body, true).each(function () {
-            var iView = $.ListView.instanceOf(this);
-
-            if ( $(this).children('.ListView_Item').length )  return;
-
-            iView.$_View.click(function (iEvent) {
-                if (iEvent.target.parentNode === this)
-                    iView.focus( iEvent.target );
-            });
+            $('*:button,  a.Button,  .No_Select,  .Panel > .Head,  .Tab > label')
+                .noSelect();
         });
-    });
 
     if ($.browser.msie < 11)  return;
 
@@ -63,13 +46,15 @@ define([
         ].join(' '),
         '.No_Pointer',
         function (iEvent) {
+
             if (iEvent.target !== this)  return;
 
-            var $_This = $(this).hide(),
-                $_Under = $(DOM.elementFromPoint(iEvent.pageX, iEvent.pageY));
-            $_This.show();
-            $_Under.trigger(iEvent);
+            var $_This = $( this ).hide(),
+                $_Under = $(
+                    $_DOM[0].elementFromPoint(iEvent.pageX, iEvent.pageY)
+                );
+
+            $_This.show();    $_Under.trigger( iEvent );
         }
     );
-
 });

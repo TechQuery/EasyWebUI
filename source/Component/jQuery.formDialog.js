@@ -2,9 +2,10 @@ define(['jquery'],  function ($) {
 
 /* ---------- 表单对话框  v0.1 ---------- */
 
-    var $_BOM = $(self);
+    var $_BOM = $( self );
 
     function show() {
+
         return this.css({
             opacity:    1,
             left:
@@ -15,6 +16,7 @@ define(['jquery'],  function ($) {
     }
 
     function close() {
+
         var $_This = this.css({
                 opacity:    0,
                 left:       0,
@@ -48,11 +50,11 @@ define(['jquery'],  function ($) {
 
             }).on('keyup',  function (iEvent) {
                 if (
-                    (iEvent.type == 'keyup')  &&
-                    (iEvent.which == 27)  &&
+                    (iEvent.type === 'keyup')  &&
+                    (iEvent.which === 27)  &&
                     (! $.expr[':'].field( iEvent.target ))
                 )
-                    $(this).trigger('reset')[0].reset();
+                    $( this ).trigger('reset')[0].reset();
             });
         });
     };

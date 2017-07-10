@@ -7,12 +7,12 @@
     "node": "^5.0.0"
   },
   "devDependencies": {
-    "requirejs": "^2.3.3",
-    "uglify-js": "^2.8.28"
+    "amd-bundle": "^0.4.2",
+    "uglify-js": "^3.0.24"
   },
   "scripts": {
-    "bundle": "r_js -o build/source.js",
-    "compress": "uglifyjs EasyWebUI.js -c -m -o EasyWebUI.min.js --source-map=EasyWebUI.min.map",
+    "bundle": "cd source  &&  amd-bundle ../EasyWebUI.js -e jquery",
+    "compress": "uglifyjs EasyWebUI.js -o build/EasyWebUI.min.js --config-file build/compress.json",
     "build": "npm run bundle  &&  npm run compress",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
