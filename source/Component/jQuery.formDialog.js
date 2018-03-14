@@ -21,7 +21,7 @@ define(['jquery'],  function ($) {
                 opacity:    0,
                 left:       0,
                 top:        0
-            });
+            }).off('.Dialog');
 
         return  new Promise(function (iResolve) {
 
@@ -38,17 +38,17 @@ define(['jquery'],  function ($) {
 
         return  new Promise(function (iResolve) {
 
-            show.call( $_This ).submit(function () {
+            show.call( $_This ).on('submit.Dialog',  function () {
 
                 close.call( $_This ).then(function () {
 
                     iResolve($.paramJSON('?' + $_This.serialize()));
                 });
-            }).on('reset',  function () {
+            }).on('reset.Dialog',  function () {
 
                 close.call( $_This ).then( iResolve );
 
-            }).on('keyup',  function (iEvent) {
+            }).on('keyup.Dialog',  function (iEvent) {
                 if (
                     (iEvent.type === 'keyup')  &&
                     (iEvent.which === 27)  &&

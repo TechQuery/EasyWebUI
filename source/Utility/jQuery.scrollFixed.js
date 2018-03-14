@@ -23,12 +23,14 @@ define(['jquery', '../jQueryKit'],  function ($) {
     $.extend(Scroll_Fixed.prototype, {
         getLimit:    function () {
 
-            var LM = this.constructor.limitMap,  iLimit = { };
+            var LM = this.constructor.limitMap,
+                iLimit = { },
+                offset = this.$_View.offset();
 
             for (var iKey in LM)
                 iLimit['max-' + iKey] = $_BOM[ iKey ]()
                     - (
-                        this.$_View.offset()[ LM[iKey][0] ]  -
+                        offset[ LM[iKey][0] ]  -
                         $_DOM['scroll' + LM[iKey][1]]()
                     )
                     - ($_DOM[ iKey ]()  -  (
@@ -54,8 +56,8 @@ define(['jquery', '../jQueryKit'],  function ($) {
 
             this.$_View.css({
                 position:        'static',
-                'max-width':     'auto',
-                'max-height':    'auto'
+                'max-width':     'inherit',
+                'max-height':    'inherit'
             });
 
             if ( this.onChange )  this.onChange.call(this.$_View[0], 'static');
@@ -68,11 +70,11 @@ define(['jquery', '../jQueryKit'],  function ($) {
 
             var iPosition = this.$_View.css('position');
 
-            if (Scroll_Top < this.offset.top) {
+            if (Scroll_Top > this.offset.top) {
 
-                if (iPosition != 'static')  this.destroy();
+                if (iPosition != 'fixed')  this.render();
 
-            } else if (iPosition != 'fixed')  this.render();
+            } else if (iPosition != 'static')  this.destroy();
 
             return this;
         }

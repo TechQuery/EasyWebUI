@@ -1,6 +1,6 @@
 # EasyWebUI
 
-
+【注意】本项目不再维护，其部分优秀特性将逐步融入 [BootEWA 组件库](https://boot-web.tk/)！
 
 ## 【概述】
 

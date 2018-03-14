@@ -2,7 +2,7 @@
 //          >>>  EasyWebUI Component Library  <<<
 //
 //
-//      [Version]     v1.6  (2017-07-10)  Stable
+//      [Version]     v1.6  (2017-08-08)  Stable
 //
 //      [Based on]    iQuery v3  or  jQuery (with jQueryKit)
 //
@@ -20,7 +20,7 @@ define([
     'HTML-5_Patch/FlexBox',        'HTML-5_Patch/Input-Range', 'HTML-5_Patch/DataList',
     'Utility/jQuery.pwConfirm',    'Utility/jQuery.checkAll',
     'Component/jQuery.formDialog', 'Component/jQuery.iPanel',
-    'Utility/jQuery.scrollFix',    'NoSelect'
+    'Utility/jQuery.scrollFixed',  'NoSelect'
 ],  function ($) {
 
     var $_DOM = $( document ).ready(function () {
